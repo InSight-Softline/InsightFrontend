@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <div>
-        <MyAccordion></MyAccordion>
+        <MyAccordion className="border-inherit"></MyAccordion>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
