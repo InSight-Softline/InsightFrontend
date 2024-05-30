@@ -1,5 +1,6 @@
 Linkliste: 
     https://tailwindcss.com/docs/installation
+    https://mui.com/joy-ui/react-slider/
 
 
 
@@ -17,5 +18,7 @@ Benötigte Komponenten:
 
     Audit durchführen:
         - (einklappbare), Tabelle mir einer Spalte
+        - slider
+        - tickbox
 
 
