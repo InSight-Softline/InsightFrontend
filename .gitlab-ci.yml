@@ -37,31 +37,21 @@ stages:          # List of stages for jobs, and their order of execution
 
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
-e2e-test-job:   # This job runs in the test stage.
-  image: node:20 #konkrete version
-  stage: test    # It only starts when the job in the build stage completes successfully.
+test-job:
+  image: node:20
+  stage: test
   extends: 
     - .setupCypress
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    #- npm start &     # start the server in the background
-    #- npm run e2e     # run Cypress tests
+    - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
+    - npm run e2e
     - echo "Code coverage is 90%"
-
-integration-test-job:
-  image: node:20 #konkrete version
-  stage: test
-  script:
-    - echo "[*] Starting Integration Test...."
+    - echo "[*] Starting Integration Test...."                      #integration-test-job
+    - npm run integration-test
     - echo "[*] Integration Test coverage is 100 %"
-
-lint-test-job:   # This job also runs in the test stage.
-  image: node:20 #konkrete version
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
+    - echo "Linting code... This will take about 10 seconds."       #linit-test-job
+    - npm run lint
     - echo "No lint issues found."
-
 
 #BUILD STAGE
 frontend-build-job:       # This job runs in the build stage, which runs first.
