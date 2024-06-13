@@ -7,16 +7,16 @@ const Sidebar = () => {
       <h2 className="text-2xl font-semibold mb-4">Übersicht</h2>
       <ul>
         <li className="mb-2">
-          <Link to="/" className="text-gray-700 hover:text-blue-500">Dashboard</Link>
+          <Link data-cy="nav-dashboard" to="/" className="text-gray-700 hover:text-blue-500">Dashboard</Link>
         </li>
         <li className="mb-2">
-          <Link to="/newAudit" className="text-gray-700 hover:text-blue-500">New Audit</Link>
+          <Link data-cy="nav-newAudit" to="/newAudit" className="text-gray-700 hover:text-blue-500">New Audit</Link>
         </li>
         <li className="mb-2">
-          <Link to="/performAudit" className="text-gray-700 hover:text-blue-500">Perform Audit</Link>
+          <Link data-cy="nav-performAudit" to="/performAudit" className="text-gray-700 hover:text-blue-500">Perform Audit</Link>
         </li>
         <li className="mb-2">
-          <Link to="/evaluation" className="text-gray-700 hover:text-blue-500">Evaluation</Link>
+          <Link data-cy="nav-evaluation" to="/evaluation" className="text-gray-700 hover:text-blue-500">Evaluation</Link>
         </li>
       </ul>
     </div>
