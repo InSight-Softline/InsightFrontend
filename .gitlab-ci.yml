@@ -1,4 +1,4 @@
-# This file is a template, and might need editing before it works on your project.
+  # This file is a template, and might need editing before it works on your project.
 # This is a sample GitLab CI/CD configuration file that should run without any modifications.
 # It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
 # it uses echo commands to simulate the pipeline execution.
@@ -29,21 +29,31 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend && npm install
 
+.setupCypress:
+  image: node:20
+  before_script:
+    - cd $(pwd)/frontend && npm install
+    - npm ci
+
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
-unit-test-job:   # This job runs in the test stage.
+e2e-test-job:   # This job runs in the test stage.
   image: node:20 #konkrete version
   stage: test    # It only starts when the job in the build stage completes successfully.
+  extends: 
+    - .setupCypress
   script:
     - echo "Running unit tests... This will take about 60 seconds."
+    #- npm start &     # start the server in the background
+    #- npm run e2e     # run Cypress tests
     - echo "Code coverage is 90%"
 
 integration-test-job:
   image: node:20 #konkrete version
   stage: test
   script:
-    - echo "Starting Integration Test...."
-    - echo "Integration Test coverage is 100 %"
+    - echo "[*] Starting Integration Test...."
+    - echo "[*] Integration Test coverage is 100 %"
 
 lint-test-job:   # This job also runs in the test stage.
   image: node:20 #konkrete version
@@ -51,6 +61,7 @@ lint-test-job:   # This job also runs in the test stage.
   script:
     - echo "Linting code... This will take about 10 seconds."
     - echo "No lint issues found."
+
 
 #BUILD STAGE
 frontend-build-job:       # This job runs in the build stage, which runs first.
@@ -67,20 +78,27 @@ frontend-build-job:       # This job runs in the build stage, which runs first.
     - echo "Building complete."
 
 docker-deploy-job:
-  image: docker:20.10.16
+  image: docker:20
   stage: build
-  #rules:
-  #  - if: $CI_COMMIT_REF_NAME == "main"
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  rules:
+   - if: $CI_COMMIT_REF_NAME == "main"
   script:
+    - echo "${CI_DEPLOY_PASSWORD}"
     - echo "Building & Deploying Docker Image..."
-    #- echo "$CI_DEPLOY_PASSWORD" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin #Authenticate against the gitlab container registry
-    #- docker build --pull #pulling the latest image
-    #- docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend . #creating an image
-    #- docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend    #deploying an image
-    - echo "Image Build & Deployment was executed!"
+    - docker logout
+    - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin #Authenticate against the gitlab container registry
+    - cd $(pwd)/frontend
+    - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend .
+    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend    
+    - echo "[*] Image Build & Deployment was executed.."
 
-
-frontend-deploy-job:      # This job runs in the deploy stage.
+publish-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: 
     name: production
@@ -89,6 +107,5 @@ frontend-deploy-job:      # This job runs in the deploy stage.
     - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "Application successfully deployed :)"
     # wir erstellen auf dem server einen docker runner, der aus der gitlab ci durch den projektnamen tag getriggert
-
