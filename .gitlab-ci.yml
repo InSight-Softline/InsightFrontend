@@ -27,12 +27,14 @@ stages:          # List of stages for jobs, and their order of execution
 .setupNpm:
   image: node:20
   before_script:
-    - cd $(pwd)/frontend && npm install
+    - cd $(pwd)/frontend
+    - npm install
 
 .setupCypress:
   image: node:20
   before_script:
-    - cd $(pwd)/frontend && npm install
+    - cd $(pwd)/frontend
+    - npx cypress install
     - npm ci
 
 #TESTING STAGE
