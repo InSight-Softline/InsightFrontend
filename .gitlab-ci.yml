@@ -54,9 +54,9 @@ test-job:
     - echo "Checking npm version..."                                #check npm version
     - npm --version
     - echo "Starting the server in the background..."
-    - npm run dev &                                                   # Starten des Servers im Hintergrund
+    - npm run dev &                                                 # Starten des Servers im Hintergrund
     - echo "Waiting for the server to start..."
-    - sleep 20                                                      # Warten auf das Starten des Servers
+    - npx wait-on http://localhost:5173                             # # Ensure the server has started
     - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
     - npm run e2e
     - echo "Code coverage is 90%"
