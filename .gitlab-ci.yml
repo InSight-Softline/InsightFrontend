@@ -49,6 +49,10 @@ test-job:
   script:
     - echo "Checking npm version..."                                #check npm version
     - npm --version
+    - echo "Starting the server in the background..."
+    - npm start &                                                   # Starten des Servers im Hintergrund
+    - echo "Waiting for the server to start..."
+    - sleep 10                                                      # Warten auf das Starten des Servers
     - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
     - npm run e2e
     - echo "Code coverage is 90%"
