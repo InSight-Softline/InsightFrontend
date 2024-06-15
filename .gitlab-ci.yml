@@ -32,7 +32,6 @@ stages:          # List of stages for jobs, and their order of execution
     - npm install tailwindcss --save-dev  # Install tailwindcss as a dev dependency
     - npm install autoprefixer --save-dev # Install autoprefixer as a dev dependency
     - npm install @mui/material @mui/icons-material
-    - npm install wait-on@7.2.0 --save-dev
     
 
 .setupCypress:
@@ -57,7 +56,7 @@ test-job:
     - echo "Starting the server in the background..."
     - npm run dev &                                                 # Starten des Servers im Hintergrund
     - echo "Waiting for the server to start..."
-    - npx wait-on http://localhost:5173                             # # Ensure the server has started
+    - sleep 20                                                      # Warten auf das Starten des Servers
     - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
     - npm run e2e
     - echo "Code coverage is 90%"
