@@ -45,8 +45,10 @@ test-job:
   extends: 
     - .setupCypress
   before_script:
-    - apt-get update -qq && apt-get install -qq xvfb
+    - apt-get update -qq && apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
   script:
+    - echo "Checking npm version..."                                #check npm version
+    - npm --version
     - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
     - npm run e2e
     - echo "Code coverage is 90%"
