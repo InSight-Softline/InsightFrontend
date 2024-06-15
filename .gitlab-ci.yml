@@ -29,7 +29,10 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npm install
-    - npm install tailwindcss autoprefixer --save-dev  # Install tailwindcss as a dev dependenc
+    - npm install tailwindcss --save-dev  # Install tailwindcss as a dev dependency
+    - npm install autoprefixer --save-dev # Install autoprefixer as a dev dependency
+    - npm install @mui/material @mui/icons-material
+    
 
 .setupCypress:
   image: cypress/base:latest
