@@ -40,7 +40,7 @@ stages:          # List of stages for jobs, and their order of execution
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-job:
-  image: node:20
+  image: cypress/base:13.11.0
   stage: test
   extends: 
     - .setupCypress
