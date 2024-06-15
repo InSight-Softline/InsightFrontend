@@ -40,10 +40,12 @@ stages:          # List of stages for jobs, and their order of execution
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-job:
-  image: cypress/base:13.11.0
+  image: node:20
   stage: test
   extends: 
     - .setupCypress
+  before_script:
+    - apt-get update -qq && apt-get install -qq xvfb
   script:
     - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
     - npm run e2e
