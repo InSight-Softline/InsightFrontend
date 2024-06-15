@@ -32,6 +32,7 @@ stages:          # List of stages for jobs, and their order of execution
     - npm install tailwindcss --save-dev  # Install tailwindcss as a dev dependency
     - npm install autoprefixer --save-dev # Install autoprefixer as a dev dependency
     - npm install @mui/material @mui/icons-material
+    - npm install wait-on@7.2.0 --save-dev
     
 
 .setupCypress:
