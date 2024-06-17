@@ -7,6 +7,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Dashboard Navigation Tests', () => {
     beforeEach(() => {
         cy.visit('http://localhost:5173');
+        cy.wait(5000);  // Wartezeit von 5 Sekunden nach dem Besuch der Seite
     });
 
     it('should find and click the main links to the subpages', () => {
@@ -29,7 +30,6 @@ describe('Dashboard Navigation Tests', () => {
     });
 
     it('should stay on the same page when other boxes are clicked', () => {
-
         cy.get('a[href="/"]').eq(1).click();
         cy.url().should('eq', 'http://localhost:5173/');
 
@@ -58,4 +58,3 @@ describe('Dashboard Navigation Tests', () => {
         cy.url().should('eq', 'http://localhost:5173/');
     });
 });
-
