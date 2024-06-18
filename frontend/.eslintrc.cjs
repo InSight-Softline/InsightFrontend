@@ -3,7 +3,8 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
-    node: true
+    node: true,
+    'cypress/globals': true // Cypress globals
   },
   extends: [
     'eslint:recommended',
@@ -24,7 +25,8 @@ module.exports = {
   plugins: [
     'react-refresh',
     'react',
-    'react-hooks',    
+    'react-hooks',
+    'cypress' // Cypress plugin    
   ],
   rules: {
     'react/jsx-no-target-blank': 'off',
@@ -37,6 +39,16 @@ module.exports = {
     // Weitere Regeln hinzufügen, falls benötigt
     'no-unused-vars': 'warn', // Setzt die Regel für keine nicht verwendeten Variablen
     'react/no-deprecated': 'warn', // Warnung bei Verwendung veralteter React APIs
+  },
+  globals: {
+    // Globale Variablen für Cypress definieren
+    cy: 'readonly',
+    Cypress: 'readonly',
+    describe: 'readonly',
+    it: 'readonly',
+    expect: 'readonly',
+    beforeEach: 'readonly'
+    // Weitere globale Variablen nach Bedarf hinzufügen
   },
   overrides: [
     {
