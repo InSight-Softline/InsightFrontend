@@ -12,5 +12,12 @@ module.exports = defineConfig({
       framework: "react",
       bundler: "vite",
     },
+    supportFile: "cypress/support/index.js",
+    specPattern: "cypress/integration/**/*.spec.js",
+    video: true,
+    screenshotsFolder: "cypress/screenshots",
+    videosFolder: "cypress/videos",
+    viewportWidth: 1280,
+    viewportHeight: 720,
   },
 });

@@ -141,3 +141,8 @@ out/
 # Other
 *.log
 *.tmp
+
+#custom deploy script
+deploy.sh
+
+./cypress/screenshots/

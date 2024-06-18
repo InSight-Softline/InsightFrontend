@@ -1,4 +1,5 @@
   # This file is a template, and might need editing before it works on your project.
+  # This file is a template, and might need editing before it works on your project.
 # This is a sample GitLab CI/CD configuration file that should run without any modifications.
 # It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
 # it uses echo commands to simulate the pipeline execution.
@@ -41,6 +42,12 @@ stages:          # List of stages for jobs, and their order of execution
     - npx cypress install
     - npm ci
 
+.setupCypress:
+  image: node:20
+  before_script:
+    - cd $(pwd)/frontend && npm install
+    - npm ci
+
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-job:
@@ -80,7 +87,7 @@ frontend-build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Building the application..."
     - npm run build
-    - echo "Building complete."
+    - echo "Building complete! :)"
 
 docker-deploy-job:
   image: docker:20
@@ -91,11 +98,11 @@ docker-deploy-job:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
-  rules:
-   - if: $CI_COMMIT_REF_NAME == "main"
+  #rules:
+  # - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "${CI_DEPLOY_PASSWORD}"
-    - echo "Building & Deploying Docker Image..."
+    - echo "Building & Deploying Docker Image...."
     - docker logout
     - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin #Authenticate against the gitlab container registry
     - cd $(pwd)/frontend
@@ -103,6 +110,7 @@ docker-deploy-job:
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend    
     - echo "[*] Image Build & Deployment was executed.."
 
+publish-job:      # This job runs in the deploy stage.
 publish-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: 
