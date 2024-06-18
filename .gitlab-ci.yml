@@ -82,6 +82,7 @@ test-lint:
     - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh
     - npm audit fix
   script:
+    - cd frontend
     - echo "Running linting..."
     - pwd  # Zeige das aktuelle Verzeichnis an
     - ls   # Liste den Inhalt des Verzeichnisses auf
