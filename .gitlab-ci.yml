@@ -40,7 +40,7 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npx cypress install
-    - npm ci
+    - npm i
 
 .setupCypress:
   image: node:20
