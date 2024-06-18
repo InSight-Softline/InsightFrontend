@@ -30,10 +30,6 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npm install
-    - npm install tailwindcss --save-dev  # Install tailwindcss as a dev dependency
-    - npm install autoprefixer --save-dev # Install autoprefixer as a dev dependency
-    - npm install @mui/material @mui/icons-material
-    
 
 .setupCypress:
   image: cypress/base:latest
@@ -42,20 +38,13 @@ stages:          # List of stages for jobs, and their order of execution
     - npx cypress install
     - npm i
 
-.setupCypress:
-  image: node:20
-  before_script:
-    - cd $(pwd)/frontend && npm install
-    - npm i
-
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-e2e:
+  image: cypress/base:latest
   stage: test
   extends:
     - .setupCypress
-  before_script:
-    - apt-get update -qq && apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
   script:
     - echo "Running Cypress e2e tests..."
     - npm run dev & # Start the server in the background
@@ -70,6 +59,7 @@ test-e2e:
 
 
 test-integration:
+  image: cypress/base:latest
   stage: test
   extends:
     - .setupCypress
