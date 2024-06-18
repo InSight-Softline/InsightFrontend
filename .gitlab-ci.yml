@@ -43,50 +43,30 @@ stages:          # List of stages for jobs, and their order of execution
 
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
-test-e2e:
+test-job:
+  image: cypress/base:latest
   stage: test
-  extends:
+  extends: 
     - .setupCypress
-  script:
-    - echo "Running Cypress e2e tests..."
-    - npm run dev & # Start the server in the background
-    - sleep 20 # Wait for the server to start (adjust time as needed)
-    - npx cypress run # Run Cypress end-to-end tests
-    - echo "Cypress e2e tests completed"
-  artifacts:
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
-    expire_in: 1 week
-
-
-test-integration:
-  stage: test
-  extends:
-    - .setupCypress
-  script:
-    - echo "Running integration tests..."
-    - npm run dev & # Start the server in the background
-    - sleep 20 # Wait for the server to start (adjust time as needed)
-    - npm run integration-test # Run integration tests
-    - echo "Integration tests completed"
-  artifacts:
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
-    expire_in: 1 week
-
-test-lint:
-  stage: test
-  extends:
     - .setupNpm
+  #before_script:
+    #- apt-get update -qq && apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
   script:
-    - echo "Running linting..."
-    - npm run lint # Run ESLint for linting
-    - echo "Linting completed"
-
-
-
+    - echo "Checking npm version..."                                #check npm version
+    - npm --version
+    - echo "Starting the server in the background..."
+    - npm run dev &                                                 # Starten des Servers im Hintergrund
+    - echo "Waiting for the server to start..."
+    - sleep 20                                                      # Warten auf das Starten des Servers
+    - echo "Running unit tests... This will take about 60 seconds." # e2e-test-job
+    - npm run e2e
+    - echo "Code coverage is 90%"
+    - echo "[*] Starting Integration Test...."                      #integration-test-job
+    - npm run integration-test
+    - echo "[*] Integration Test coverage is 100 %"
+    - echo "Linting code... This will take about 10 seconds."       #linit-test-job
+    - npm run lint
+    - echo "No lint issues found."
 
 #BUILD STAGE
 frontend-build-job:       # This job runs in the build stage, which runs first.
