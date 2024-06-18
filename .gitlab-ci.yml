@@ -29,7 +29,7 @@ stages:          # List of stages for jobs, and their order of execution
   image: node:20
   before_script:
     - cd $(pwd)/frontend
-    - npm install
+    - npm i
     - npm audit fix
 
 .setupCypress:
@@ -42,7 +42,6 @@ stages:          # List of stages for jobs, and their order of execution
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-e2e:
-  image: cypress/base:latest
   stage: test
   extends:
     - .setupCypress
@@ -60,7 +59,6 @@ test-e2e:
 
 
 test-integration:
-  image: cypress/base:latest
   stage: test
   extends:
     - .setupCypress
@@ -82,7 +80,7 @@ test-lint:
     - .setupNpm
   script:
     - echo "Running linting..."
-    - npm run lint                            # Run ESLint for linting
+    - npm run lint                               # Run ESLint for linting
     - echo "Linting completed"
 
 
