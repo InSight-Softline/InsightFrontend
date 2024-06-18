@@ -72,7 +72,7 @@ test-e2e:
   #  paths:
       #- cypress/screenshots/
       #- cypress/videos/
-    expire_in: 1 week
+    #expire_in: 1 week
 
 test-lint:
   stage: test
