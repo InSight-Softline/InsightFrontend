@@ -30,6 +30,7 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npm install
+    - npm audit fix
 
 .setupCypress:
   image: cypress/base:latest
@@ -65,9 +66,9 @@ test-integration:
     - .setupCypress
   script:
     - echo "Running integration tests..."
-    - npm run dev & # Start the server in the background
-    - sleep 20 # Wait for the server to start (adjust time as needed)
-    - npm run integration-test # Run integration tests
+    - npm run dev &                          # Start the server in the background
+    - sleep 20                               # Wait for the server to start (adjust time as needed)
+    - npm run integration-test               # Run integration tests
     - echo "Integration tests completed"
   artifacts:
     paths:
@@ -79,11 +80,9 @@ test-lint:
   stage: test
   extends:
     - .setupNpm
-  before_script: 
-   - npm install eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh
   script:
     - echo "Running linting..."
-    - npm run lint # Run ESLint for linting
+    - npm run lint                            # Run ESLint for linting
     - echo "Linting completed"
 
 

@@ -26,6 +26,7 @@ module.exports = {
   plugins: [
     'react-refresh',
     'react',
+    'react-hooks',    
     'cypress' // Falls man Cypress benutzt
   ],
   rules: {
