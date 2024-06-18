@@ -79,6 +79,7 @@ test-lint:
   extends:
     - .setupNpm
   before_script:
+    - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh
     - npm audit fix
   script:
     - echo "Running linting..."
