@@ -27,7 +27,6 @@ module.exports = {
     'react-refresh',
     'react',
     'react-hooks',    
-    'cypress' // Falls man Cypress benutzt
   ],
   rules: {
     'react/jsx-no-target-blank': 'off',
