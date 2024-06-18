@@ -79,7 +79,7 @@ test-lint:
   extends:
     - .setupNpm
   before_script:
-    - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh
+    - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh eslint-plugin-cypress@latest --save-dev
     - npm audit fix
   script:
     - cd frontend
