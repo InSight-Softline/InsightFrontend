@@ -30,7 +30,7 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npm i
-    - npm audit fix
+    
 
 .setupCypress:
   image: cypress/base:latest
@@ -78,6 +78,8 @@ test-lint:
   stage: test
   extends:
     - .setupNpm
+  before_script:
+    - npm audit fix
   script:
     - echo "Running linting..."
     - npm run lint                               # Run ESLint for linting
