@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Link, Route, Routes} from 'react-router-dom';
 import Dashboard from './components/Dashboard.jsx';
+import Header from './components/Header.jsx';
 import NewAudit from './components/NewAudit.jsx';
 import PerformAudit from './components/PerformAudit.jsx';
 import Evaluation from './components/Evaluation.jsx';
@@ -10,6 +11,7 @@ function App() {
     return (
         <Router>
             <div>
+                <Header></Header>
                 <nav>
                     <ul>
                         <li>
