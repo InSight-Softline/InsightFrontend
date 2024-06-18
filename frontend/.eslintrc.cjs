@@ -3,15 +3,13 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
-    node: true,
-    'cypress/globals': true // Falls man Cypress benutzt
+    node: true
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
-    'plugin:cypress/recommended' // Falls man Cypress benutzt
+    'plugin:react-hooks/recommended'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: {
