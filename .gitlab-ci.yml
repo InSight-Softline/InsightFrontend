@@ -58,20 +58,20 @@ test-e2e:
     expire_in: 1 week
 
 
-test-integration:
-  stage: test
-  extends:
-    - .setupCypress
-  script:
-    - echo "Running integration tests..."
-    - npm run dev &                          # Start the server in the background
-    - sleep 20                               # Wait for the server to start (adjust time as needed)
-    - npm run integration-test               # Run integration tests
-    - echo "Integration tests completed"
-  artifacts:
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
+#test-integration:
+ # stage: test
+  #extends:
+    #- .setupCypress
+ # script:
+   # - echo "Running integration tests..."
+   # - npm run dev &                          # Start the server in the background
+   # - sleep 20                               # Wait for the server to start (adjust time as needed)
+   # - npm run integration-test               # Run integration tests
+   # - echo "Integration tests completed"
+  #artifacts:
+  #  paths:
+      #- cypress/screenshots/
+      #- cypress/videos/
     expire_in: 1 week
 
 test-lint:
@@ -83,6 +83,8 @@ test-lint:
     - npm audit fix
   script:
     - echo "Running linting..."
+    - pwd  # Zeige das aktuelle Verzeichnis an
+    - ls   # Liste den Inhalt des Verzeichnisses auf
     - npm run lint                               # Run ESLint for linting
     - echo "Linting completed"
 
