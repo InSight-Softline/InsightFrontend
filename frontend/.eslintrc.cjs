@@ -25,7 +25,7 @@ module.exports = {
     'react-refresh',
     'react',
     'react-hooks',
-    'cypress' // Cypress plugin    
+    'cypress'                                                                // Cypress plugin    
   ],
   rules: {
     'react/jsx-no-target-blank': 'off',
@@ -33,27 +33,25 @@ module.exports = {
       'warn',
       { allowConstantExport: true }
     ],
-    'react/react-in-jsx-scope': 'off', // Wird in neueren React-Versionen nicht mehr benötigt
+    'react/react-in-jsx-scope': 'off',                                        // Wird in neueren React-Versionen nicht mehr benötigt
     'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
-    // Weitere Regeln hinzufügen, falls benötigt
-    'no-unused-vars': 'warn', // Setzt die Regel für keine nicht verwendeten Variablen
-    'react/no-deprecated': 'warn', // Warnung bei Verwendung veralteter React APIs
+    'no-unused-vars': ['error', { varsIgnorePattern: 'React' }],              // Setzt die Regel für keine nicht verwendeten Variablen
+    'react/no-deprecated': 'warn',                                            // Warnung bei Verwendung veralteter React APIs
   },
-  globals: {
-    // Globale Variablen für Cypress definieren
+                                                                              // Globale Variablen für Cypress definieren
+  globals: {  
     cy: 'readonly',
     Cypress: 'readonly',
     describe: 'readonly',
     it: 'readonly',
     expect: 'readonly',
     beforeEach: 'readonly'
-    // Weitere globale Variablen nach Bedarf hinzufügen
   },
   overrides: [
     {
-      files: ['**/*.cy.js'], // Für Cypress-Dateien
+      files: ['**/*.cy.js'],                                                  // Für Cypress-Dateien
       rules: {
-        'no-unused-vars': 'off', // Deaktiviert die Regel für Cypress-Dateien, wenn nötig
+        'no-unused-vars': 'off',                                              // Deaktiviert die Regel für Cypress-Dateien, wenn nötig
       }
     }
   ]
