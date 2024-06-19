@@ -47,9 +47,9 @@ test-e2e:
     - .setupCypress
   script:
     - echo "Running Cypress e2e tests..."
-    - npm run dev & # Start the server in the background
-    - sleep 20 # Wait for the server to start (adjust time as needed)
-    - npx cypress run # Run Cypress end-to-end tests
+    - npm run dev &                             # Start the server in the background
+    - sleep 20                                  # Wait for the server to start (adjust time as needed)
+    - npx cypress run                           # Run Cypress end-to-end tests
     - echo "Cypress e2e tests completed"
   artifacts:
     paths:
@@ -84,16 +84,16 @@ test-lint:
   script:
     - cd frontend
     - echo "Running linting..."
-    - pwd  # Zeige das aktuelle Verzeichnis an
-    - ls   # Liste den Inhalt des Verzeichnisses auf
+    - pwd                                        # Zeige das aktuelle Verzeichnis an
+    - ls                                         # Liste den Inhalt des Verzeichnisses auf
     - npm run lint                               # Run ESLint for linting
     - echo "Linting completed"
 
 
 
 #BUILD STAGE
-frontend-build-job:       # This job runs in the build stage, which runs first.
-  image: node:20 #konkrete version
+frontend-build-job:                                 # This job runs in the build stage, which runs first.
+  image: node:20                                    #konkrete version
   stage: build
   environment: production
   extends: 
