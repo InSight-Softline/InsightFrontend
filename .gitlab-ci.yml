@@ -84,7 +84,7 @@ test-lint:
    # - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh eslint-plugin-cypress@latest --save-dev
    # - npm audit fix
   script:
-    - cd frontend
+    #- cd frontend
     - echo "Running linting..."
     #- pwd                                        # Zeige das aktuelle Verzeichnis an/ use for debugging
     #- ls                                         # Liste den Inhalt des Verzeichnisses auf/ use for debugging

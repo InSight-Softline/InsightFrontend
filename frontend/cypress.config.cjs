@@ -1,5 +1,3 @@
-
-// @cypress/verify/module-type commonjs
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
