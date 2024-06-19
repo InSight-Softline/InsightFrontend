@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "scripts": {
+    "scripts": {
     "e2e": "cypress run",
     "integration-test": "cypress run --spec 'cypress/integration/**/*.spec.js'",
     "dev": "vite",
