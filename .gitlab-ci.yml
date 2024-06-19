@@ -30,6 +30,7 @@ stages:          # List of stages for jobs, and their order of execution
   before_script:
     - cd $(pwd)/frontend
     - npm i
+    - npm audit fix
     
 
 .setupCypress:
@@ -38,6 +39,7 @@ stages:          # List of stages for jobs, and their order of execution
     - cd $(pwd)/frontend
     - npx cypress install
     - npm i
+    - npm audit fixnpm audit fix
 
 #TESTING STAGE
 #Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
