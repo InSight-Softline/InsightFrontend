@@ -1,9 +1,3 @@
-Cypress.on('uncaught:exception', (err, runnable) => {
-  return false
-})
-
-
-
 describe('Router', () => {
   it('Visits sides', () => {
     cy.visit('http://localhost:5173/')

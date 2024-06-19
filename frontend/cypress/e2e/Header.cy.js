@@ -1,8 +1,3 @@
-Cypress.on('uncaught:exception', (err, runnable) => {
-  return false
-})
-
-
 describe('Header Test', () => {
 
   it('Visits InSight (Localhost)', () => {

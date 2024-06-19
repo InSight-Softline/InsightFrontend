@@ -1,9 +1,3 @@
-Cypress.on('uncaught:exception', (err, runnable) => {
-    return false
-  })
-
-
-
 describe('Dashboard Navigation Tests', () => {
     beforeEach(() => {
         cy.visit('http://localhost:5173');
