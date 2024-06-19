@@ -84,9 +84,9 @@ test-lint:
   script:
     - cd frontend
     - echo "Running linting..."
-    - pwd                                        # Zeige das aktuelle Verzeichnis an
-    - ls                                         # Liste den Inhalt des Verzeichnisses auf
-    - npm run lint                               # Run ESLint for linting
+    #- pwd                                        # Zeige das aktuelle Verzeichnis an/ use for debugging
+    #- ls                                         # Liste den Inhalt des Verzeichnisses auf/ use for debugging
+    - npm run lint                                # Run ESLint for linting
     - echo "Linting completed"
 
 
