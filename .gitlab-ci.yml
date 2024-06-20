@@ -12,7 +12,7 @@ stages:
   before_script:
     - cd $(pwd)/frontend
     - npm i
-    #- npm audit fix --force || true
+
     
 
 .setupCypress:
@@ -21,10 +21,9 @@ stages:
     - cd $(pwd)/frontend
     - npx cypress install
     - npm i
-    #- npm audit fix --force || true
+
 
 #TESTING STAGE
-#Testing Framework scheint cyprus zu werden https://docs.cypress.io/guides/guides/command-line
 test-e2e:
   stage: test
   extends:
@@ -62,11 +61,7 @@ test-lint:
   stage: test
   extends:
     - .setupNpm
-  #before_script:
-   # - npm i eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh eslint-plugin-cypress@latest --save-dev
-   # - npm audit fix
   script:
-    #- cd frontend
     - echo "Running linting..."
     #- pwd                                        # Zeige das aktuelle Verzeichnis an/ use for debugging
     #- ls                                         # Liste den Inhalt des Verzeichnisses auf/ use for debugging
