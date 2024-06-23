@@ -1,5 +1,7 @@
-
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import React from 'react';
+import {BrowserRouter as Router, Link, Route, Routes} from 'react-router-dom';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Dashboard from './components/Dashboard.jsx';
 import NewAudit from './components/NewAudit.jsx';
 import PerformAudit from './components/PerformAudit.jsx';

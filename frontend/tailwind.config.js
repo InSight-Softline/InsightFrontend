@@ -7,8 +7,10 @@ module.exports = {
       "./src/**/*.{js,jsx,ts,tsx}",
     ],
     theme: {
-      extend: {},
+        extend: {
+            colors: {'softline-rot': '#c4171f'}
+        },
     },
     plugins: [],
-  };
-  
+
+}

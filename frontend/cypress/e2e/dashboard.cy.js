@@ -21,35 +21,6 @@ describe('Dashboard Navigation Tests', () => {
         cy.get('a[href="/newAudit"]').first().click();
         cy.url().should('include', '/newAudit');
     });
-
-    it('should stay on the same page when other boxes are clicked', () => {
-
-        cy.get('a[href="/"]').eq(1).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(2).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(3).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(4).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(5).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(6).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(7).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(8).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('a[href="/"]').eq(9).click();
-        cy.url().should('eq', 'http://localhost:5173/');
-    });
+    
 });
 

@@ -146,3 +146,5 @@ out/
 deploy.sh
 
 ./cypress/screenshots/
+
+*.local
