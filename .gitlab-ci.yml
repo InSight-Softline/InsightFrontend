@@ -95,4 +95,5 @@ publish-job:
       podman stop insight-frontend
       podman rm insight-frontend
       podman run -d --name insight-frontend -p 80:80 $DOCKER_IMAGE
+      podman logout gitlab.dit.htwk-leipzig.de:5050
       EOF
