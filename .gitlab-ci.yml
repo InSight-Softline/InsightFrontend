@@ -62,7 +62,7 @@ docker-release-job:
   script:
     - echo "Building & Deploying Docker Image...."
     - docker logout
-    - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin # Authenticate against the GitLab container registry
+    - echo -n "${CI_REGISTRY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend .
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend    
@@ -90,7 +90,7 @@ publish-job:
     - ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
     - |
       ssh -i ~/.ssh/id_rsa $REMOTE_USERNAME@$REMOTE_HOST << EOF
-      echo -n "${CI_DEPLOY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin
+      echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
       podman pull $DOCKER_IMAGE
       podman stop insight-frontend
       podman rm insight-frontend
