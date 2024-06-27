@@ -3,24 +3,46 @@ describe('Dashboard Navigation Tests', () => {
         cy.visit('http://localhost:5173');
     });
 
-    it('should find and click the main links to the subpages', () => {
-        cy.contains('Dashboard').click();
-        cy.url().should('include', 'http://localhost:5173');
+    //TODO change all URLs to relative paths
 
-        cy.contains('NewAudit').click();
-        cy.url().should('include', '/newAudit');
+    it('Links are working', () => {
 
-        cy.contains('PerformAudit').click();
-        cy.url().should('include', '/performAudit');
+        cy.get('[data-cy="nav-dashboard"]').click()
 
-        cy.contains('Evaluation').click();
-        cy.url().should('include', '/evaluation');
+        cy.url().should('eq', 'http://localhost:5173/');
+
+        cy.get('[data-cy="nav-newAudit"]').click()
+
+        cy.url().should('eq', 'http://localhost:5173/newAudit');
+
+        cy.get('[data-cy="nav-performAudit"]').click()
+
+        cy.url().should('eq', 'http://localhost:5173/performAudit');
+
+        cy.get('[data-cy="nav-evaluation"]').click()
+
+        cy.url().should('eq', 'http://localhost:5173/evaluation');
     });
 
-    it('should navigate to the New Audit page when the first box is clicked', () => {
-        cy.get('a[href="/newAudit"]').first().click();
-        cy.url().should('include', '/newAudit');
+    it('names and links of fetched data works as expected', () => {
+
+        cy.intercept('GET', 'http://localhost:8080/api/v1/audits', {
+            statusCode: 200,
+            body: [{id: 1, name: 'Maggy'}, {id: 2, name: 'Joan'}]
+        }).as('getAudits');
+
+        // Verify buttons with fetched data
+        cy.get('[data-cy="data-buttons"]').should('have.length', 2);
+        cy.get('[data-cy="data-buttons"]').first().should('contain', 'Maggy');
+        cy.get('[data-cy="data-buttons"]').last().should('contain', 'Joan');
+
+        //plus-button
+        cy.get('[data-cy="new-audit-button"]').click();
+        cy.url().should('eq', 'http://localhost:5173/newAudit');
+        cy.go('back');  // Navigate back to the dashboard
+
+
     });
-    
+
 });
 

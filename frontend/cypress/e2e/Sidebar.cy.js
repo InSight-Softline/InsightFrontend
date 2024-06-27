@@ -1,27 +1,27 @@
 describe('Sidebar Navigation', () => {
     beforeEach(() => {
-      cy.visit('http://localhost:5173/');
+        cy.visit('http://localhost:5173/');
     });
 
     it('Links are working', () => {
 
-      cy.getBySel('nav-dashboard').click()
+        cy.get('[data-cy="nav-dashboard"]').click()
 
-      cy.url().should('eq', 'http://localhost:5173/');
+        cy.url().should('eq', 'http://localhost:5173/');
 
-      cy.getBySel('nav-newAudit').click()
+        cy.get('[data-cy="nav-newAudit"]').click()
 
-      cy.url().should('eq', 'http://localhost:5173/newAudit');
+        cy.url().should('eq', 'http://localhost:5173/newAudit');
 
-      cy.getBySel('nav-performAudit').click()
+        cy.get('[data-cy="nav-performAudit"]').click()
 
-      cy.url().should('eq', 'http://localhost:5173/performAudit');
+        cy.url().should('eq', 'http://localhost:5173/performAudit');
 
-      cy.getBySel('nav-evaluation').click()
+        cy.get('[data-cy="nav-evaluation"]').click()
 
-      cy.url().should('eq', 'http://localhost:5173/evaluation');
-  
-      
+        cy.url().should('eq', 'http://localhost:5173/evaluation');
+
+
     });
-  });
+});
   

@@ -145,6 +145,7 @@ out/
 #custom deploy script
 deploy.sh
 
-./cypress/screenshots/
+/cypress/screenshots/
+/cypress/videos/
 
 *.local
