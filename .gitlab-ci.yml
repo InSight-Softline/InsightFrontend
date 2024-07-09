@@ -50,8 +50,8 @@ frontend-build-job-fullstack:
   image: node:20 
   stage: build
   environment: production
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+  #rules:
+  #  - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "Building the application..."
     - cd frontend
@@ -98,14 +98,14 @@ docker-release-job-fullstack:
     DOCKER_TLS_CERTDIR: ""
   dependencies:
     - frontend-build-job-fullstack
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+  #rules:
+  #  - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "Building & Deploying Docker Image...."
     - docker logout
     - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
-    - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack .
+    - docker build --file Dockerfile.fullstack -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack .
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack    
     - echo "[*] Image Build & Deployment was executed."
 
