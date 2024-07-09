@@ -7,8 +7,8 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <Header/>
-        <App className="pb-16"/>
-        <Footer/>
+            <Header/>
+            <App className="pb-16"/>
+            <Footer/>
     </React.StrictMode>
 );

@@ -55,7 +55,7 @@ function Evaluation() {
     const colors = ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'];
 
     return (
-        <div>
+        <div className="ml-64 mt-16 p-4">
             <div id="title">
                 <h1 className="text-center text-4xl m-6">Evaluation</h1>
             </div>
@@ -67,9 +67,9 @@ function Evaluation() {
                 <p className={"text-center text-xl"}>Gesamtfortschritt</p>
             </div>
 
-            <div id="categories" className={"flex flex-row justify-center items-center"}>
+            <div id="categories" className={"flex flex-wrap justify-center gap-4 mb-8"}>
                 <div className={"ml-6 m-8 text-center"}>
-                    <CircularProgressWithLabel value={progress} className={"size-60"}/>
+                    <CircularProgressWithLabel value={progress} className={"size-60 mb-2"}/>
                     <p className={"text-center"}>Kategorie 1</p>
                 </div>
                 <div className={"ml-6 m-8 text-center"}>
@@ -99,7 +99,7 @@ function Evaluation() {
                     series={[
                         {data: [4, 2, 8, 4, 1, 3]},
                     ]}
-                    width={1200}
+                    width="100%"
                     height={350}
                     xAxis={[
                         {
