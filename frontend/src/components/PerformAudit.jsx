@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { FormGroup, FormControlLabel, Checkbox, Button } from '@mui/material';
 import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/system';
@@ -32,36 +33,35 @@ const Textarea = styled(BaseTextareaAutosize)(
     }
   `
 );
-
 /**
  * Creates the perform audits site with basic functionality
  * 
  * @author [Anna Liepelt] https://gitlab.dit.htwk-leipzig.de/anna.liepelt
  */
 function PerformAudit() {
-
+  const { auditId } = useParams();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   /*fetching data from the backend*/
   useEffect(() => {
-    api.get('/v1/audits/1/ratings') /*relative path, editable in .env files & api.js -*/
-        .then(response => {
-            console.log(response);
-            setQuestions(response.data);
-            setLoading(false);
-            })
-            .catch(err => {
-                console.error('Error fetching data:', err);
-                setError(err);
-                setLoading(false);
-            });
-    }, []);
-
+    setLoading(true);
+    api.get(`/v1/audits/${auditId}/ratings`) // Use auditId from the params
+      .then(response => {
+        console.log(response);
+        setQuestions(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching data:', err);
+        setError(err);
+        setLoading(false);
+      });
+  }, [auditId]); // Refetch data whenever auditId changes
 
   const updateQuestionById = (id, newPartialQuestion) => {
-    const q = questions.map(question => id === question.id? {...question, ...newPartialQuestion} : question );
+    const q = questions.map(question => id === question.id ? { ...question, ...newPartialQuestion } : question);
     setQuestions(q);
   }
 
@@ -89,6 +89,14 @@ function PerformAudit() {
     }
   }
 
+  if (loading) {
+    return <p>Laden...</p>;
+  }
+
+  if (error) {
+    return <p>Fehler beim Laden der Daten: {error.message}</p>;
+  }
+
   return (
     <>
       <h1 className="px-10 py-5 font-bold">Audit durchführen</h1>
@@ -101,7 +109,7 @@ function PerformAudit() {
                 key={label}
                 control={
                   <Checkbox
-                    checked={getChecked(label, question)} 
+                    checked={getChecked(label, question)}
                     onChange={(event) => handleCheckboxChange(event, label, question)}
                   />
                 }
