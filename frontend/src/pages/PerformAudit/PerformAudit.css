@@ -1,0 +1,36 @@
+
+.audit-header {
+    @apply px-10 py-5 font-bold;
+}
+
+.question-text {
+    @apply px-10 py-5;
+}
+
+.checkbox-group {
+    @apply px-5 flex justify-center;
+}
+
+.comment-textarea {
+    @apply box-border w-11/12 m-2 font-sans text-sm font-normal leading-6 p-3 rounded-t-lg rounded-b-lg bg-white border border-gray-300 hover:border-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-200;
+}
+
+.alert-container {
+    @apply fixed bottom-20 left-0 w-full z-50;
+}
+
+.button-container {
+    @apply flex justify-center mt-10;
+}
+
+.navigate-button {
+    @apply absolute p-2 right-16 bg-blue-500 text-white rounded;
+}
+
+.page-container {
+    @apply relative min-h-screen;
+}
+
+.content-container {
+    @apply pb-24; /* Adjusted for padding bottom */
+}

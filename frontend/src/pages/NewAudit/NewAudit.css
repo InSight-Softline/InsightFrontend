@@ -1,0 +1,20 @@
+
+.form-container {
+    @apply w-[240px] flex justify-center items-center mx-auto m-8;
+}
+
+.input-container {
+    @apply relative flex w-full items-center gap-2;
+}
+
+.input-field {
+    @apply w-full p-4 h-[45px] rounded-t-lg rounded-b-lg bg-neutral-200 shadow-inner;
+}
+
+.button-container {
+    @apply flex p-10;
+}
+
+.create-audit-button {
+    @apply absolute bottom-20 right-16 p-2 bg-blue-500 text-white rounded;
+}

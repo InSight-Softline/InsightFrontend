@@ -1,0 +1,33 @@
+
+.evaluation-title {
+    @apply text-center text-4xl m-6;
+}
+
+.result-container {
+    @apply flex flex-col justify-center items-center h-20;
+}
+
+.linear-progress-box {
+    @apply text-center w-full;
+    max-width: 80%;
+}
+
+.overall-progress-text {
+    @apply text-center text-xl;
+}
+
+.categories-container {
+    @apply flex flex-row justify-center items-center;
+}
+
+.category-progress {
+    @apply ml-6 m-8 text-center;
+}
+
+.circular-progress {
+    @apply size-60;
+}
+
+.result-per-question-container {
+    @apply flex flex-row justify-center items-center;
+}

@@ -1,0 +1,15 @@
+.dashboard-title {
+    @apply text-center text-4xl m-6;
+}
+
+.grid-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 justify-center;
+}
+
+.add-button, .audit-button {
+    @apply flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-xl m-4 p-4 border border-gray-400;
+}
+
+.add-button-icon {
+    @apply text-gray-600;
+}
