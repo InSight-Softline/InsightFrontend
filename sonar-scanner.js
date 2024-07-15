@@ -6,8 +6,8 @@ scanner(
     options: {
       "sonar.sources": "./frontend/src",
       "sonar.exclusions": "**/*.test.tsx",
-      "sonar.tests": "/frontend/cypress/e2e",
-      "sonar.test.inclusions": "**/*.test.tsx,**/*.test.ts",
+      "sonar.tests": "./frontend/cypress/e2e",
+      "sonar.test.inclusions": "**/*.cy.js",
     },
   },
   () => process.exit()

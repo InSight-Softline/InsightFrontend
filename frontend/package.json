@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "test:coverage": "cypress run && nyc report --reporter=lcov"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -26,15 +27,19 @@
     "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.12.41",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
-    "cypress": "^13.11.0",
+    "cypress": "^13.13.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "istanbul-lib-coverage": "^3.2.2",
+    "nyc": "^17.0.0",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.0"
   }
