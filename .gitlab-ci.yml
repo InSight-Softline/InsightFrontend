@@ -69,6 +69,7 @@ sonarqube-coverage:
   script: 
     - echo "Generating coverage"  
     - cd frontend
+    - mkdir -p .nyc_output  # Manuelles Erstellen des Verzeichnisses
     - npm run dev &
     - npm run test:coverage
 
