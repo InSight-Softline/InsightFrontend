@@ -7,6 +7,8 @@ stages:
   - release-fullstack
   - deploy
 
+
+
 .setup:npm:
   cache: # https://docs.gitlab.com/ee/ci/caching/#cache-nodejs-dependencies
     key:
@@ -62,11 +64,12 @@ test-lint:
 
 sonarqube-check:
   stage: test
-  image: 
-    name: sonarsource/sonar-scanner-cli:5.0
-    entrypoint: [""]
-  extends:
-    - ".setup:npm"
+  image: node:20
+  before_script:
+    # Install SonarScanner
+    - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+    - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt && mv /opt/sonar-scanner-5.0.1.3006-linux /opt/sonar-scanner
+    - export PATH="/opt/sonar-scanner/bin:${PATH}"
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
