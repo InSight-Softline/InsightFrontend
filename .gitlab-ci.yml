@@ -73,7 +73,9 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-    - sonar-scanner
+    - npm run dev &
+    - npm run test:coverage
+    - sonar-scanner -X
   allow_failure: true
   #only:
     #- merge_requests
