@@ -63,6 +63,7 @@ test-lint:
 
 sonarqube-coverage:
   stage: test
+  image: cypress/base:latest
   extends:
     - ".setup:npm"
   script: 
