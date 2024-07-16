@@ -1,8 +1,7 @@
 {
-  "extends": "@istanbuljs/nyc-config-typescript",
-  "all": true,
-  "reporter": ["html", "text-summary", "lcov"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"],
-  "exclude": ["cypress/**/*.js"],
+  "extends": "@istanbuljs/nyc-config-babel",
+  "include": ["cypress/e2e/**/*.js"],
+  "instrument": true,
+  "sourceMap": false,
   "temp-directory": "./.nyc_output"
 }
