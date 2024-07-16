@@ -89,8 +89,8 @@ frontend-build-job:
   environment: production
   extends:
     - ".setup:npm"
-  #rules:
-  #  - if: $CI_COMMIT_REF_NAME == "main"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "Building the application..."
     - cd frontend
@@ -131,8 +131,8 @@ docker-release-job:
     DOCKER_TLS_CERTDIR: ""
   dependencies:
     - frontend-build-job
-  #rules:
-  #  - if: $CI_COMMIT_REF_NAME == "main"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
   script:
     - echo "Building & Deploying Docker Image...."
     - docker logout
