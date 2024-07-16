@@ -141,7 +141,7 @@ docker-release-job:
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
-    - docker tag frontend gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$CI_PIPELINE_ID
+    - docker tag gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$CI_PIPELINE_ID
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$CI_PIPELINE_ID    
     - echo "[*] Image Build & Deployment was executed."
 
