@@ -1,5 +1,11 @@
 describe('Sidebar Navigation', () => {
     beforeEach(() => {
+        cy.intercept('GET', '/api/v1/audits', (req) => {
+            req.reply({
+                statusCode: 200,
+                body: [{ id: 1, name: 'Audit 1' }, { id: 2, name: 'Audit 2' }],
+            });
+          }).as('getAudits');
         cy.visit('http://localhost:5173/');
     });
 
@@ -8,20 +14,7 @@ describe('Sidebar Navigation', () => {
         cy.get('[data-cy="nav-dashboard"]').click()
 
         cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('[data-cy="nav-newAudit"]').click()
-
-        cy.url().should('eq', 'http://localhost:5173/newAudit');
-
-        cy.get('[data-cy="nav-performAudit"]').click()
-
-        cy.url().should('eq', 'http://localhost:5173/performAudit');
-
-        cy.get('[data-cy="nav-evaluation"]').click()
-
-        cy.url().should('eq', 'http://localhost:5173/evaluation');
-
-
+  
     });
 });
   

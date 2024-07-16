@@ -36,14 +36,14 @@ function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 justify-center">
                 {/* First box including plus icon */}
                 <Link to="/newAudit" data-cy="new-audit-button"
-                      className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-lg m-4 p-4">
+                      className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-xl m-4 p-4 border border-gray-400">
                     <Add className="text-gray-600" style={{ fontSize: '10vw', maxWidth: 80, maxHeight: 80 }} />
                 </Link>
 
-                {/* boxes to perform audit */}
+                {/* boxes to perform audit */} 
                 {data.map(audit => (
-                    <Link data-cy="data-buttons" key={audit.id} to={`/audit/${audit.id}`}
-                          className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-lg m-4 p-4">
+                    <Link data-cy="data-buttons" key={audit.id} to={`/performAudit/${audit.id}`}
+                          className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-xl m-4 p-4 border border-gray-400">
                         <p className="text-center">{audit.name}</p>
                     </Link>
                 ))}

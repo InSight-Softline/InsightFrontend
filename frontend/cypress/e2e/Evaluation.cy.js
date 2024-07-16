@@ -4,20 +4,6 @@ describe('Evaluation Page Tests', () => {
         cy.visit('http://localhost:5173/evaluation/1');
     });
 
-    it('Links are working', () => {
-        cy.get('[data-cy="nav-dashboard"]').click();
-        cy.url().should('eq', 'http://localhost:5173/');
-
-        cy.get('[data-cy="nav-newAudit"]').click();
-        cy.url().should('eq', 'http://localhost:5173/newAudit');
-
-        cy.get('[data-cy="nav-performAudit"]').click();
-        cy.url().should('eq', 'http://localhost:5173/performAudit');
-
-        cy.get('[data-cy="nav-evaluation"]').click();
-        cy.url().should('eq', 'http://localhost:5173/evaluation');
-    });
-
     it('should display ratings for audit ID 1', () => {
         // Setup intercept for the ratings API call
         cy.intercept('GET', 'http://localhost:8080/api/v1/audits/1/ratings', {

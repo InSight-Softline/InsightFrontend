@@ -3,7 +3,7 @@ import { FormGroup, FormControlLabel, Checkbox, Button, Alert } from '@mui/mater
 import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/system';
 import api from "../api.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 //Styling for the Comment Sections
 const Textarea = styled(BaseTextareaAutosize)(
@@ -35,7 +35,8 @@ const Textarea = styled(BaseTextareaAutosize)(
 );
 
 /**
- * Creates the perform audits site, which shows the questions, checkboxes for the rating and a comment section. 
+ * Creates the perform audits site, which shows the questions, checkboxes for the rating and a comment section.
+ * Error handling for the GET and PATCH requests with alerts. 
  * 
  * @author [Anna Liepelt] https://gitlab.dit.htwk-leipzig.de/anna.liepelt
  */
@@ -44,10 +45,10 @@ function PerformAudit() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // const { auditId } = useParams();
-  const auditId = 1;
-
+  const { auditId } = useParams();
+  
   /*fetching data from the backend*/
   useEffect(() => {
     api.get(`/v1/audits/${auditId}/ratings`)
@@ -61,10 +62,10 @@ function PerformAudit() {
                 setError(err);
                 setLoading(false);
             });
-    }, []);
+    }, [auditId]);
 
   const updateQuestionById = (id, newPartialQuestion) => {
-    const q = questions.map(question => id === question.id? {...question, ...newPartialQuestion} : question );
+    const q = questions.map(question => id === question.id ? { ...question, ...newPartialQuestion } : question);
     setQuestions(q);
   }
 
@@ -91,35 +92,34 @@ function PerformAudit() {
 
   const handleCommentInput = (event, id) => {
     const newComment = event.target.value;
-    updateQuestionById(id, {comment: newComment});
-    patchQuestion(id, [{path: "/comment", value: newComment}]);
+    updateQuestionById(id, { comment: newComment });
   };
 
   const handleCheckboxChange = (event, label, question) => {
     const isChecked = event.target.checked
 
-    if(!isChecked) {
-      const newQuestion = {na: null, points: null}
+    if (!isChecked) {
+      const newQuestion = { nA: null, points: null }
       updateQuestionById(question.id, newQuestion);
-      patchQuestion(question.id, [{path: "/na", value: newQuestion.na}, {path: "/points", value: newQuestion.points}]);
+      patchQuestion(question.id, [{ path: "/na", value: newQuestion.nA }, { path: "/points", value: newQuestion.points }]);
       return
     }
 
     switch (label) {
       case 'N/A':
-        updateQuestionById(question.id, {na: true, points: null});
-        patchQuestion(question.id, [{path: "/na", value: true}, {path: "/points", value: null}]);
+        updateQuestionById(question.id, { nA: true, points: null });
+        patchQuestion(question.id, [{ path: "/na", value: true }, { path: "/points", value: null }]);
         break;
       default:
-        updateQuestionById(question.id, {points: label, na: false});
-        patchQuestion(question.id, [{path: "/na", value: false}, {path: "/points", value: label}]);
+        updateQuestionById(question.id, { points: label, nA: false });
+        patchQuestion(question.id, [{ path: "/na", value: false }, { path: "/points", value: label }]);
     }
   };
 
   const getChecked = (label, question) => {
     switch (label) {
       case 'N/A':
-        return question.na;
+        return question.nA;
       default:
         return question.points === label;
     }
@@ -131,11 +131,11 @@ function PerformAudit() {
   }
 
   return (
-    <>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
       <h1 className="px-10 py-5 font-bold">Audit durchführen</h1>
       {questions.map((question) => (
         <div key={question.id}>
-          <h2 className="px-10 py-5">{question.question}</h2>
+          <h2 className="px-10 py-5" data-cy="question_text">{question.question}</h2>
           <FormGroup className="px-5 flex justify-center" row>
             {[0, 1, 2, 3, 4, 5, 'N/A'].map((label) => (
               <FormControlLabel
@@ -155,6 +155,7 @@ function PerformAudit() {
             placeholder='Kommentar eingeben'
             value={question.comment}
             onChange={(event) => handleCommentInput(event, question.id)}
+            onBlur={(event) => patchQuestion(question.id, [{ path: "/comment", value: event.target.value }])}
           />
         </div>
       ))}
@@ -176,7 +177,16 @@ function PerformAudit() {
           >Laden... Bitte warten.</Alert>
         </div>
       )}
-    </>
+      <div style={{ paddingBottom: '100px' }}>
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => navigate(`/evaluation/${auditId}`)}
+            className="absolute p-2 right-16 bg-blue-500 text-white rounded">
+            Bewertung anzeigen
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -3,25 +3,8 @@ import {Link} from 'react-router-dom';
 
 const Sidebar = () => {
     return (
-        <div className="w-64 h-[calc(100vh-4rem-4rem)] bg-gray-200 p-4 shadow-md fixed">
-            <h2 className="text-2xl font-semibold mb-4">Übersicht</h2>
-            <ul>
-                <li className="mb-2">
-                    <Link data-cy="nav-dashboard" to="/" className="text-gray-700 hover:text-blue-500">Dashboard</Link>
-                </li>
-                <li className="mb-2">
-                    <Link data-cy="nav-newAudit" to="/newAudit" className="text-gray-700 hover:text-blue-500">New
-                        Audit</Link>
-                </li>
-                <li className="mb-2">
-                    <Link data-cy="nav-performAudit" to="/performAudit" className="text-gray-700 hover:text-blue-500">Perform
-                        Audit</Link>
-                </li>
-                <li className="mb-2">
-                    <Link data-cy="nav-evaluation" to="/evaluation"
-                          className="text-gray-700 hover:text-blue-500">Evaluation</Link>
-                </li>
-            </ul>
+        <div className="w-64 h-[calc(100vh-4rem-4.5rem)] bg-gray-200 p-4 shadow-md fixed">
+                    <Link data-cy="nav-dashboard" to="/" className="block p-2 mt-4 text-gray-700 hover:text-black hover:scale-105 transition-transform transform border border-gray-400 rounded text-center">Dashboard</Link>
         </div>
     );
 }
