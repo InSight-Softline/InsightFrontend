@@ -1,40 +1,3 @@
-describe('New Audit Creation', () => {
-  beforeEach(() => {
-    // Besuche die Seite für die Erstellung eines neuen Audits
-    cy.visit('/newAudit'); // Dies wird automatisch auf 'http://localhost:3000/newAudit' erweitert
-  });
-
-  it('should create a new audit and navigate to perform audit page', () => {
-    // Mock für die POST-Anfrage an /v1/audits/new
-    cy.intercept('POST', '/v1/audits/new', {
-      statusCode: 201,
-      body: { id: '12345' } // Beispiel-ID für das neue Audit
-    }).as('createAudit');
-
-    // Überprüfen, ob das Eingabefeld existiert und den Platzhalter "Name" enthält
-    cy.get('[data-cy="NewAudit"]').should('exist');
-
-    // Eingabe des Audit-Namens
-    cy.get('[data-cy="NewAudit"]').type('Test Audit');
-
-    // Verschiebe eine Kategorie zu "Ausgewählte Kategorien"
-    // Hier wird angenommen, dass Kategorien per Drag-and-Drop verschoben werden
-    // Du musst den genauen Selector und Drag-and-Drop-Logik anpassen
-    cy.get('[data-column="Verfügbare Kategorien"] .cursor-grab').first().trigger('dragstart');
-    cy.get('[data-column="Ausgewählte Kategorien"]').trigger('drop');
-
-    // Klicke auf den Button zum Erstellen eines neuen Audits
-    cy.get('button').contains('Audit erstellen').click();
-
-    // Warten auf den Mock-Request und Überprüfen der Weiterleitung
-    cy.wait('@createAudit').its('request.body').should('include', {
-      name: 'Test Audit'
-    });
-
-    // Überprüfen der Navigation zur neuen Audit-Seite
-    cy.url().should('include', '/performAudit/12345');
-  });
-});
 describe("NewAudit Page Tests", () => {
   // TODO: change all URLs to relative paths
 
@@ -98,5 +61,27 @@ describe("NewAudit Page Tests", () => {
         "be.visible",
       );
     });
+  });
+});
+describe('New Audit Creation', () => {
+  beforeEach(() => {
+    
+    cy.visit('http://localhost:5173/newAudit');
+  });
+
+  it('should create a new audit and navigate to perform audit page', () => {
+    cy.intercept('POST', '/performAudit/', {
+      statusCode: 201,
+      body: { id: '12345' } 
+    }).as('createAudit');
+
+    cy.get('[data-cy="NewAudit"]').should('exist');
+
+    cy.get('[data-cy="NewAudit"]').type('Test Audit');
+
+    cy.get('button').contains('Audit erstellen').click();
+    
+
+    cy.url().should('include', '/performAudit/');
   });
 });

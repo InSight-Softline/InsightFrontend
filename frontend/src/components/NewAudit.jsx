@@ -1,16 +1,33 @@
 import React, { useState, useEffect } from "react";
 import api from "../api.js";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const NewAudit = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [name, setName] = useState("Name");
+
 
   const navigate = useNavigate();
+    
+  
   const handleCreateAuditClick = () => {
-    navigate("/performAudit");
+    api
+      .post("/v1/audits/new", {name: name,
+        categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,
+      })
+      .then((response) => {
+        navigate("/performAudit/"+response.data.id)
+      })
+     
+
   };
+
+  const handleNameChange = (event) => {
+    setName(event.target.value)
+  }
 
   useEffect(() => {
     api
@@ -43,11 +60,7 @@ const NewAudit = () => {
     <div>
       <form className="w-[240px] flex justify-center items-center mx-auto m-8">
         <div className="relative flex w-full items-center gap-2">
-          <input
-            type="text"
-            placeholder="Name"
-            className="w-full p-4 h-[45px] rounded-t-lg rounded-b-lg bg-neutral-200 shadow-inner"
-          />
+          <TextField data-cy="NewAudit" placeholder="Name" label="Outlined" variant="outlined" value={name} onChange={handleNameChange}/>
         </div>
       </form>
       <Board cards={cards} setCards={setCards} />{" "}
