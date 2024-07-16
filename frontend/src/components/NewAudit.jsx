@@ -7,29 +7,11 @@ const NewAudit = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [name, setName] = useState("Name");
-
 
   const navigate = useNavigate();
     
   
-    
-  
   const handleCreateAuditClick = () => {
-    api
-      .post("/v1/audits/new", {name: name,
-        categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,
-      })
-      .then((response) => {
-        navigate("/performAudit/"+response.data.id)
-      })
-     
-
-  };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
     api
       .post("/v1/audits/new", {name: name,
         categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,
@@ -90,7 +72,7 @@ const NewAudit = () => {
       </div>
     </div>
   );
-;
+};
 
 // The Board component renders two columns and manages the state of the cards
 const Board = ({ cards, setCards }) => {
