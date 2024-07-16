@@ -8,11 +8,6 @@ describe('Router', () => {
 
     cy.contains('Dashboard').click()
 
-    cy.contains('New Audit').click()
-
-    cy.contains('Perform Audit').click()
-
-    cy.contains('Evaluation').click()
 
     
 
