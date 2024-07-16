@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "../api.js";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
-import { TextField } from "@mui/material";
 
 const NewAudit = () => {
   const [cards, setCards] = useState([]);
@@ -14,23 +13,7 @@ const NewAudit = () => {
   const navigate = useNavigate();
     
   
-    
-  
   const handleCreateAuditClick = () => {
-    api
-      .post("/v1/audits/new", {name: name,
-        categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,
-      })
-      .then((response) => {
-        navigate("/performAudit/"+response.data.id)
-      })
-     
-
-  };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
     api
       .post("/v1/audits/new", {name: name,
         categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,

@@ -1,4 +1,21 @@
 describe("NewAudit Page Tests", () => {
+  // TODO: change all URLs to relative paths
+
+  it("Links of the sidebar working", () => {
+    cy.visit("http://localhost:5173");
+
+    cy.get('[data-cy="nav-dashboard"]').click();
+    cy.url().should("eq", "http://localhost:5173/");
+
+    cy.get('[data-cy="nav-newAudit"]').click();
+    cy.url().should("eq", "http://localhost:5173/newAudit");
+
+    cy.get('[data-cy="nav-performAudit"]').click();
+    cy.url().should("eq", "http://localhost:5173/performAudit");
+
+    cy.get('[data-cy="nav-evaluation"]').click();
+    cy.url().should("eq", "http://localhost:5173/evaluation");
+  });
 
   // Test when backend is available
   context("Backend is available", () => {
@@ -24,7 +41,7 @@ describe("NewAudit Page Tests", () => {
 
     it("Search input and next button are visible", () => {
       cy.get('input[type="text"]').should("be.visible");
-      cy.get('label').contains('Audit Name').should('exist').and('be.visible');
+      cy.get('input[type="text"]').should("have.attr", "placeholder", "Name");
       cy.get("button").contains("Audit erstellen").should("be.visible");
     });
   });

@@ -4,4 +4,4 @@ services:
     image: gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     ports:
       - "80:80"
-    restart: unless-stopped
+    restart: always
