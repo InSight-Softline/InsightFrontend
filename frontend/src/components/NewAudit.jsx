@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "../api.js";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
-import { TextField } from "@mui/material";
 
 const NewAudit = () => {
   const [cards, setCards] = useState([]);
@@ -91,7 +90,7 @@ const NewAudit = () => {
       </div>
     </div>
   );
-};
+;
 
 // The Board component renders two columns and manages the state of the cards
 const Board = ({ cards, setCards }) => {
