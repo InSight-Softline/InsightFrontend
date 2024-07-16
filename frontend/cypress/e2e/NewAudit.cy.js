@@ -64,24 +64,35 @@ describe("NewAudit Page Tests", () => {
   });
 });
 describe('New Audit Creation', () => {
+  
   beforeEach(() => {
-    
-    cy.visit('http://localhost:5173/newAudit');
+    cy.intercept("GET", "/api/v1/categories", (req) => {
+      req.reply({
+        statusCode: 200,
+        body: [
+          { id: 1, name: "Category 1" },
+          { id: 2, name: "Category 2" },
+        ],
+      });
+    }).as("getCategories");
+
+    cy.visit("http://localhost:5173/newAudit");
   });
+    
 
   it('should create a new audit and navigate to perform audit page', () => {
-    cy.intercept('POST', '/performAudit/', {
+    cy.intercept('POST', '/api/v1/audits/new', {
       statusCode: 201,
       body: { id: '12345' } 
     }).as('createAudit');
 
-    cy.get('[data-cy="NewAudit"]').should('exist');
+    cy.get('input[placeholder="Name"]').type('Test Audit');
 
-    cy.get('[data-cy="NewAudit"]').type('Test Audit');
-
-    cy.get('button').contains('Audit erstellen').click();
+    cy.get('[data-cy="NewAudit"]').click();
     
-
-    cy.url().should('include', '/performAudit/');
+    cy.wait('@createAudit').then((interception) => {
+      expect(interception.response.statusCode).to.eq(201);
+      cy.url().should('include', '/performAudit/12345'); 
+    });
   });
 });

@@ -60,7 +60,7 @@ const NewAudit = () => {
     <div>
       <form className="w-[240px] flex justify-center items-center mx-auto m-8">
         <div className="relative flex w-full items-center gap-2">
-          <TextField data-cy="NewAudit" placeholder="Name" label="Outlined" variant="outlined" value={name} onChange={handleNameChange}/>
+          <TextField placeholder="Name" label="Outlined" variant="outlined" value={name} onChange={handleNameChange}/>
         </div>
       </form>
       <Board cards={cards} setCards={setCards} />{" "}
@@ -68,6 +68,7 @@ const NewAudit = () => {
       <div className="flex p-10">
         <button
           onClick={handleCreateAuditClick}
+          data-cy="NewAudit"
           className="absolute bottom-20 right-16 p-2 bg-blue-500 text-white rounded">
             Audit erstellen
         </button>
