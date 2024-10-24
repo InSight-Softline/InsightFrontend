@@ -48,6 +48,7 @@ function PerformAudit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [exampleQuestion, setExampleQuestion] = useState([{points: null, nA: false, value: null}]);
 
   const { auditId } = useParams();
   
@@ -66,57 +67,57 @@ function PerformAudit() {
             });
     }, [auditId]);
 
-  const updateQuestionById = (id, newPartialQuestion) => {
-    const q = questions.map(question => id === question.id ? { ...question, ...newPartialQuestion } : question);
-    setQuestions(q);
-  }
+  // const updateQuestionById = (id, newPartialQuestion) => {
+  //   const q = questions.map(question => id === question.id ? { ...question, ...newPartialQuestion } : question);
+  //   setQuestions(q);
+  // }
 
-  /*PATCH function for sending changes to the backend */
-  const patchQuestion = async (ratingId, newRatings) => {
-    const patchData = newRatings.map((destination) => ({
-      op: "replace",
-      path: `${destination.path}`,
-      value: destination.value,
-    }));
-    console.log(patchData);
-    api.patch(`/v1/ratings/${ratingId}`, patchData)
-    .then(response => {
-      console.log(response);
-      setLoading(false);
-      })
-      .catch(err => {
-          console.error('Error fetching data:', err);
-          setError(err);
-          setLoading(false);
-      });
-      
-  };
+  // /*PATCH function for sending changes to the backend */
+  // const patchQuestion = async (ratingId, newRatings) => {
+  //   const patchData = newRatings.map((destination) => ({
+  //     op: "replace",
+  //     path: `${destination.path}`,
+  //     value: destination.value,
+  //   }));
+  //   console.log(patchData);
+  //   api.patch(`/v1/ratings/${ratingId}`, patchData)
+  //   .then(response => {
+  //     console.log(response);
+  //     setLoading(false);
+  //     })
+  //     .catch(err => {
+  //         console.error('Error fetching data:', err);
+  //         setError(err);
+  //         setLoading(false);
+  //     });
+  //
+  // };
 
-  const handleCommentInput = (event, id) => {
-    const newComment = event.target.value;
-    updateQuestionById(id, { comment: newComment });
-  };
+  // const handleCommentInput = (event, id) => {
+  //   const newComment = event.target.value;
+  //   updateQuestionById(id, { comment: newComment });
+  // };
 
-  const handleCheckboxChange = (event, label, question) => {
-    const isChecked = event.target.checked
+  // const handleCheckboxChange = (event, label, question) => {
+  //   const isChecked = event.target.checked
+  //
+  //   if (!isChecked) {
+  //     const newQuestion = { nA: null, points: null }
+  //     updateQuestionById(question.id, newQuestion);
+  //     patchQuestion(question.id, [{ path: "/na", value: newQuestion.nA }, { path: "/points", value: newQuestion.points }]);
+  //     return
+  //   }
 
-    if (!isChecked) {
-      const newQuestion = { nA: null, points: null }
-      updateQuestionById(question.id, newQuestion);
-      patchQuestion(question.id, [{ path: "/na", value: newQuestion.nA }, { path: "/points", value: newQuestion.points }]);
-      return
-    }
-
-    switch (label) {
-      case 'N/A':
-        updateQuestionById(question.id, { nA: true, points: null });
-        patchQuestion(question.id, [{ path: "/na", value: true }, { path: "/points", value: null }]);
-        break;
-      default:
-        updateQuestionById(question.id, { points: label, nA: false });
-        patchQuestion(question.id, [{ path: "/na", value: false }, { path: "/points", value: label }]);
-    }
-  };
+  //   switch (label) {
+  //     case 'N/A':
+  //       updateQuestionById(question.id, { nA: true, points: null });
+  //       patchQuestion(question.id, [{ path: "/na", value: true }, { path: "/points", value: null }]);
+  //       break;
+  //     default:
+  //       updateQuestionById(question.id, { points: label, nA: false });
+  //       patchQuestion(question.id, [{ path: "/na", value: false }, { path: "/points", value: label }]);
+  //   }
+  // };
 
   const getChecked = (label, question) => {
     switch (label) {
@@ -125,6 +126,32 @@ function PerformAudit() {
       default:
         return question.points === label;
     }
+  }
+
+  const getValue = (exampleQuestion) => {
+    if (exampleQuestion.nA === true) {
+        return 'N/A';
+    } else {
+        return exampleQuestion.points;
+    }
+  }
+
+  const handleCheckboxChange = (value) => {
+    console.log("new value", value);
+    const isChecked = event.target.checked;
+    console.log(isChecked);
+
+    if (!isChecked) {
+        setExampleQuestion({value: null});
+        // console.log(exampleQuestion.value);
+        return;
+    }
+    if (value === 'N/A') {
+        setExampleQuestion({value: value})
+    } else {
+        setExampleQuestion({value: value})
+    }
+
   }
 
   const handleAlert = () => {
@@ -139,18 +166,17 @@ function PerformAudit() {
         <div key={question.id}>
           <h2 className="px-10 py-5" data-cy="question_text">{question.question}</h2>
           <CheckboxListComponent
-              labels={labels}
-              question={question}
-              getChecked={getChecked}
-              handleCheckboxChange = {handleCheckboxChange}
+              value={exampleQuestion.value}
+              options={labels}
+              onChange = {handleCheckboxChange}
           />
-          <Textarea
-            data-cy="commentTextarea"
-            placeholder='Kommentar eingeben'
-            value={question.comment}
-            onChange={(event) => handleCommentInput(event, question.id)}
-            onBlur={(event) => patchQuestion(question.id, [{ path: "/comment", value: event.target.value }])}
-          />
+          {/*<Textarea*/}
+          {/*  data-cy="commentTextarea"*/}
+          {/*  placeholder='Kommentar eingeben'*/}
+          {/*  value={question.comment}*/}
+          {/*  onChange={(event) => handleCommentInput(event, question.id)}*/}
+          {/*  onBlur={(event) => patchQuestion(question.id, [{ path: "/comment", value: event.target.value }])}*/}
+          {/*/>*/}
         </div>
       ))}
       {error && (

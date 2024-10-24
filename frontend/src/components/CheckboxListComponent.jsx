@@ -1,16 +1,23 @@
 import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 
-const CheckboxListComponent = ({ labels, question, getChecked, handleCheckboxChange }) => {
+
+
+const CheckboxListComponent = ({ value, options, onChange }) => {
+
+    const handleCheckboxChange = (event, label) => {
+        onChange(label);
+    }
+
     return (
         <FormGroup className="px-5 flex justify-center" row>
-            {labels.map((label) => (
+            {options.map((label) => (
                 <FormControlLabel
                     key={label}
                     control={
                         <Checkbox
-                            checked={getChecked(label, question)}
-                            onChange={(event) => handleCheckboxChange(event, label, question)}
+                            checked={value === label}
+                            onChange={(event) => onChange(label) }
                         />
                     }
                     label={label.toString()}
