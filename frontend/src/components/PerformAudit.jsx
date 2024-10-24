@@ -4,6 +4,7 @@ import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAuto
 import { styled } from '@mui/system';
 import api from "../api.js";
 import { useParams, useNavigate } from "react-router-dom";
+import CheckboxListComponent from "./CheckboxListComponent.jsx";
 
 //Styling for the Comment Sections
 const Textarea = styled(BaseTextareaAutosize)(
@@ -43,6 +44,7 @@ const Textarea = styled(BaseTextareaAutosize)(
 function PerformAudit() {
 
   const [questions, setQuestions] = useState([]);
+  const labels = [0, 1, 2, 3, 4, 5, 'N/A'];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -136,20 +138,12 @@ function PerformAudit() {
       {questions.map((question) => (
         <div key={question.id}>
           <h2 className="px-10 py-5" data-cy="question_text">{question.question}</h2>
-          <FormGroup className="px-5 flex justify-center" row>
-            {[0, 1, 2, 3, 4, 5, 'N/A'].map((label) => (
-              <FormControlLabel
-                key={label}
-                control={
-                  <Checkbox
-                    checked={getChecked(label, question)} 
-                    onChange={(event) => handleCheckboxChange(event, label, question)}
-                  />
-                }
-                label={label.toString()}
-              />
-            ))}
-          </FormGroup>
+          <CheckboxListComponent
+              labels={labels}
+              question={question}
+              getChecked={getChecked}
+              handleCheckboxChange = {handleCheckboxChange}
+          />
           <Textarea
             data-cy="commentTextarea"
             placeholder='Kommentar eingeben'
