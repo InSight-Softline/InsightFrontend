@@ -136,24 +136,6 @@ function PerformAudit() {
     }
   }
 
-  const handleCheckboxChange = (value) => {
-    console.log("new value", value);
-    const isChecked = event.target.checked;
-    console.log(isChecked);
-
-    if (!isChecked) {
-        setExampleQuestion({value: null});
-        // console.log(exampleQuestion.value);
-        return;
-    }
-    if (value === 'N/A') {
-        setExampleQuestion({value: value})
-    } else {
-        setExampleQuestion({value: value})
-    }
-
-  }
-
   const handleAlert = () => {
     setError(null); 
     window.location.reload();
@@ -168,7 +150,7 @@ function PerformAudit() {
           <CheckboxListComponent
               value={exampleQuestion.value}
               options={labels}
-              onChange = {handleCheckboxChange}
+              onChange = {setExampleQuestion}
           />
           {/*<Textarea*/}
           {/*  data-cy="commentTextarea"*/}
