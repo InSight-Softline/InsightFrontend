@@ -48,7 +48,7 @@ function PerformAudit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [exampleQuestion, setExampleQuestion] = useState([{points: null, nA: false, value: null}]);
+  const [exampleQuestion, setExampleQuestion] = useState({nA: false, value: 4});
 
   const { auditId } = useParams();
   
@@ -136,6 +136,12 @@ function PerformAudit() {
     }
   }
 
+  const handleCheckboxChange = (value) => {
+      console.log(value);
+      setExampleQuestion({...exampleQuestion, value: value});
+      console.log(exampleQuestion);
+  }
+
   const handleAlert = () => {
     setError(null); 
     window.location.reload();
@@ -150,7 +156,7 @@ function PerformAudit() {
           <CheckboxListComponent
               value={exampleQuestion.value}
               options={labels}
-              onChange = {setExampleQuestion}
+              onChange = {handleCheckboxChange}
           />
           {/*<Textarea*/}
           {/*  data-cy="commentTextarea"*/}

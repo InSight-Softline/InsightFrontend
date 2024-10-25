@@ -1,8 +1,6 @@
 import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import React, {useState} from "react";
 
-
-
 const CheckboxListComponent = ({ value, options, onChange }) => {
 
     const handleCheckboxChange = (event, label) => {
@@ -10,9 +8,9 @@ const CheckboxListComponent = ({ value, options, onChange }) => {
         console.log(isChecked);
 
         if (!isChecked) {
-            onChange({value: null});
+            onChange(null);
         } else {
-            onChange({value: label});
+            onChange(label);
         }
     }
 
