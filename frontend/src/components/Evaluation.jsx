@@ -6,8 +6,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import LinearProgress from '@mui/material/LinearProgress';
 import api from "../api.js";
 import { useParams } from "react-router-dom";
-import Title from './components/Title';
-import Text from './components/Text';
+import Title from './Title.jsx';
+import Text from './Text.jsx';
 
 function Evaluation() {
     const [responseData, setResponseData] = useState([]);
