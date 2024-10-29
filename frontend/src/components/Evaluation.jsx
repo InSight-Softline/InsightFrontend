@@ -24,10 +24,8 @@ function Evaluation() {
                 const data = response.data || [];
                 setResponseData(data);
                 setLoading(false);
-
                 const totalQuestions = data.length;
                 const maxScore = totalQuestions * 5;
-
                 const actualScore = data.reduce((acc, rating) => acc + (rating.points || 0), 0);
                 const calculatedProgress = Math.round((actualScore / maxScore) * 100);
                 setMainProgress(calculatedProgress);
