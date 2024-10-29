@@ -1,28 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import {BarChart} from '@mui/x-charts/BarChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 import LinearProgress from '@mui/material/LinearProgress';
 import api from "../api.js";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Title from './components/Title';
+import Text from './components/Text';
 
 function Evaluation() {
     const [responseData, setResponseData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [categoryProgress, setCategoryProgress] = useState({});
-    const {auditId} = useParams();
-
-    console.log(auditId);
-
+    const { auditId } = useParams();
     const [mainProgress, setMainProgress] = useState(0);
     const [pointsDistribution, setPointsDistribution] = useState(new Array(6).fill(0));
 
     useEffect(() => {
         api.get(`/v1/audits/${auditId}/ratings`)
             .then(response => {
-                console.log(response);
                 const data = response.data || [];
                 setResponseData(data);
                 setLoading(false);
@@ -30,22 +28,10 @@ function Evaluation() {
                 const totalQuestions = data.length;
                 const maxScore = totalQuestions * 5;
 
-                console.log("Total Questions:", totalQuestions);
-                console.log("Max Score:", maxScore);
-
-                const actualScore = data.reduce((acc, rating) => {
-                    console.log("Rating Points:", rating.points);
-                    return acc + (rating.points || 0);
-                }, 0);
-
-                console.log("Actual Score:", actualScore);
-
+                const actualScore = data.reduce((acc, rating) => acc + (rating.points || 0), 0);
                 const calculatedProgress = Math.round((actualScore / maxScore) * 100);
-                console.log("Calculated Progress:", calculatedProgress);
-
                 setMainProgress(calculatedProgress);
 
-                // Berechnung des Fortschritts für jede Kategorie
                 const categoryScores = {};
                 data.forEach(rating => {
                     const categoryId = rating.category.id;
@@ -56,13 +42,11 @@ function Evaluation() {
                             name: categoryName,
                             totalPoints: 0,
                             maxPoints: 0,
-                            questionCount: 0,
                         };
                     }
 
                     categoryScores[categoryId].totalPoints += (rating.points || 0);
                     categoryScores[categoryId].maxPoints += 5;
-                    categoryScores[categoryId].questionCount += 1;
                 });
 
                 const calculatedCategoryProgress = {};
@@ -70,130 +54,71 @@ function Evaluation() {
                     const category = categoryScores[categoryId];
                     calculatedCategoryProgress[categoryId] = {
                         name: category.name,
-                        progress: Math.round((category.totalPoints / category.maxPoints) * 100)
+                        progress: Math.round((category.totalPoints / category.maxPoints) * 100),
                     };
                 });
-
                 setCategoryProgress(calculatedCategoryProgress);
 
-                // Berechnung der Punkteverteilung
                 const distribution = data.reduce((acc, rating) => {
                     const points = rating.points || 0;
                     acc[points] = (acc[points] || 0) + 1;
                     return acc;
                 }, new Array(6).fill(0));
-
-                console.log("Points Distribution:", distribution);
                 setPointsDistribution(distribution);
-
             })
             .catch(err => {
-                console.error('Error fetching data:', err);
                 setError(err);
                 setLoading(false);
             });
     }, [auditId]);
 
-    if (loading) {
-        return <p>Laden...</p>;
-    }
-
-    if (error) {
-        return <p>Fehler: {error.message}</p>;
-    }
-
-    // Setup function progress bar
-    function LinearProgressWithLabel(props) {
-        return (
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Box sx={{width: '100%', mr: 1}}>
-                    <LinearProgress variant="determinate" value={mainProgress} {...props} />
-                </Box>
-                <Box sx={{minWidth: 35}}>
-                    <Typography variant="body2" color="text.secondary">{`${Math.round(props.value)}%`}</Typography>
-                </Box>
-            </Box>
-        );
-    }
-
-    // Setup progress circle
-    function CircularProgressWithLabel(props) {
-        return (
-            <Box sx={{position: 'relative', display: 'inline-flex'}}>
-                <CircularProgress variant="determinate" {...props} size={80}/>
-                <Box
-                    sx={{
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        position: 'absolute',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Typography variant="caption" component="div" color="text.secondary">
-                        {`${Math.round(props.value)}%`}
-                    </Typography>
-                </Box>
-            </Box>
-        );
-    }
-
-
-    const colors = ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'];
+    if (loading) return <CircularProgress sx={{ display: 'block', margin: 'auto' }} />;
+    if (error) return <Text>Fehler: {error.message}</Text>;
 
     return (
         <div className="p-4 flex flex-col items-center">
-            <div id="title">
-                <h1 className="text-center text-4xl m-6">Evaluation</h1>
-            </div>
+            <Title>Evaluation</Title>
 
-            <div id="result" className={"w-full flex flex-col justify-center items-center h-20 mb-6"}>
-                <Box className={"text-center"} sx={{width: '80%'}}>
-                    <LinearProgressWithLabel value={mainProgress}/>
+            <div id="result" className="w-full flex flex-col justify-center items-center h-20 mb-6">
+                <Box className="text-center" sx={{ width: '80%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <LinearProgress variant="determinate" value={mainProgress} sx={{ width: '100%', mr: 1 }} />
+                        <Typography variant="body2" color="text.secondary">{`${Math.round(mainProgress)}%`}</Typography>
+                    </Box>
                 </Box>
-                <p className={"text-center text-xl"}>Gesamtfortschritt</p>
+                <Text customStyles="text-center text-xl">Gesamtfortschritt</Text>
             </div>
 
             <div id="categories" className="w-full grid grid-cols-1 gap-6 mb-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {Object.keys(categoryProgress).map(categoryId => (
-                    <div key={categoryId} className={"flex flex-col items-center"}>
-                        <CircularProgressWithLabel
-                            value={categoryProgress[categoryId].progress} className={"size-60 mb-2"}/>
-                        <p className={"text-center mt-2"}>{categoryProgress[categoryId].name}</p>
+                    <div key={categoryId} className="flex flex-col items-center">
+                        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                            <CircularProgress variant="determinate" value={categoryProgress[categoryId].progress} size={80} />
+                            <Box sx={{
+                                top: 0, left: 0, bottom: 0, right: 0, position: 'absolute',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            }}>
+                                <Typography variant="caption" component="div" color="text.secondary">
+                                    {`${Math.round(categoryProgress[categoryId].progress)}%`}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Text customStyles="text-center mt-2">{categoryProgress[categoryId].name}</Text>
                     </div>
                 ))}
             </div>
 
-            <div id="result_per_question"
-                 className={"max-w-full overflow-x-auto pb-10"}
-                 >
+            <div id="result_per_question" className="max-w-full overflow-x-auto pb-10">
                 <BarChart
-                    series={[
-                        {data: pointsDistribution},
-                    ]}
-                    width="900"
+                    series={[{ data: pointsDistribution }]}
+                    width={900}
                     height={350}
-                    xAxis={[
-                        {
-                            scaleType: 'band',
-                            data: [0, 1, 2, 3, 4, 5],
-                            colorMap: {
-                                type: 'ordinal',
-                                values: [0, 1, 2, 3, 4, 5],
-                                colors: colors,
-                                unknownColor: "#050505",
-                            },
-                            label: 'erreichte Punkte',
-                        },
-                    ]}
-                    yAxis={[
-                        {
-                            label: 'Anzahl Fragen',
-                        },
-                    ]}
+                    xAxis={[{
+                        scaleType: 'band', data: [0, 1, 2, 3, 4, 5],
+                        colorMap: { type: 'ordinal', values: [0, 1, 2, 3, 4, 5], colors: ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'] },
+                        label: 'erreichte Punkte',
+                    }]}
+                    yAxis={[{ label: 'Anzahl Fragen' }]}
                 />
             </div>
         </div>

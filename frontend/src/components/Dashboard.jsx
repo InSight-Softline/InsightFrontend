@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 import api from "../api.js";
 
 function Dashboard() {
@@ -24,31 +28,84 @@ function Dashboard() {
     }, []);
 
     if (loading) {
-        return <p>Laden...</p>;
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Typography color="error" align="center" variant="body1">
+                Fehler beim Laden der Daten: {error.message}
+            </Typography>
+        );
     }
 
     return (
-        <div>
-            <div>
-                <h1 className="text-center text-4xl m-6">Dashboard</h1>
-            </div>
+        <Box padding={3}>
+            <Typography variant="h4" align="center" marginBottom={3}>
+                Dashboard
+            </Typography>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 justify-center">
+            <Box
+                display="grid"
+                gridTemplateColumns={{
+                    xs: 'repeat(1, 1fr)',
+                    sm: 'repeat(2, 1fr)',
+                    md: 'repeat(3, 1fr)',
+                    lg: 'repeat(4, 1fr)',
+                    xl: 'repeat(5, 1fr)',
+                }}
+                gap={3}
+                justifyContent="center"
+            >
                 {/* First box including plus icon */}
-                <Link to="/newAudit" data-cy="new-audit-button"
-                      className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-xl m-4 p-4 border border-gray-400">
-                    <Add className="text-gray-600" style={{ fontSize: '10vw', maxWidth: 80, maxHeight: 80 }} />
-                </Link>
+                <Button
+                    component={Link}
+                    to="/newAudit"
+                    variant="outlined"
+                    startIcon={<Add />}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        padding: 2,
+                        height: '100%',
+                        aspectRatio: '1 / 1',
+                        transition: 'transform 0.3s',
+                        '&:hover': { transform: 'scale(1.05)' },
+                    }}
+                >
+                    Neues Audit
+                </Button>
 
-                {/* boxes to perform audit */} 
+                {/* boxes to perform audit */}
                 {data.map(audit => (
-                    <Link data-cy="data-buttons" key={audit.id} to={`/performAudit/${audit.id}`}
-                          className="flex justify-center w-44 lg:w-52 xl:w-52 items-center aspect-square transition-transform transform hover:scale-105 bg-gray-200 rounded-xl m-4 p-4 border border-gray-400">
-                        <p className="text-center">{audit.name}</p>
-                    </Link>
+                    <Button
+                        component={Link}
+                        to={`/performAudit/${audit.id}`}
+                        key={audit.id}
+                        variant="outlined"
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            padding: 2,
+                            height: '100%',
+                            aspectRatio: '1 / 1',
+                            transition: 'transform 0.3s',
+                            '&:hover': { transform: 'scale(1.05)' },
+                        }}
+                    >
+                        <Typography variant="body1" align="center">
+                            {audit.name}
+                        </Typography>
+                    </Button>
                 ))}
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
 

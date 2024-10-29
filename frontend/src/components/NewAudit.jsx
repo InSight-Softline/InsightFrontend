@@ -1,37 +1,44 @@
 import React, { useState, useEffect } from "react";
-import api from "../api.js";
 import { useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
+import api from "../api.js";
+import {
+  Box,
+  TextField,
+  Typography,
+  CircularProgress,
+  Button,
+} from "@mui/material";
 
 const NewAudit = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [name, setName] = useState(null);
-
-  
+  const [name, setName] = useState("");
   const navigate = useNavigate();
-    
-  
+
   const handleCreateAuditClick = () => {
     api
-      .post("/v1/audits/new", {name: name,
-        categories: cards.filter((card)=>card.column === "Ausgewählte Kategorien").map((card)=>card.id) ,
+      .post("/v1/audits/new", {
+        name: name,
+        categories: cards
+          .filter((card) => card.column === "Ausgewählte Kategorien")
+          .map((card) => card.id),
       })
       .then((response) => {
-        navigate("/performAudit/"+response.data.id)
+        navigate("/performAudit/" + response.data.id);
       })
-     
-
+      .catch((err) => {
+        console.error("Error creating audit:", err);
+      });
   };
 
   const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
+    setName(event.target.value);
+  };
 
   useEffect(() => {
     api
-      .get("/v1/categories") // Adjust the URL to match your endpoint
+      .get("/v1/categories")
       .then((response) => {
         const categories = response.data.map((category) => ({
           title: category.name,
@@ -49,57 +56,59 @@ const NewAudit = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>; // Display loading message while data is being fetched
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <p>Fehler: {error.message}</p>; // Display error message if fetch fails
+    return (
+      <Typography color="error" align="center" variant="body1">
+        Fehler: {error.message}
+      </Typography>
+    );
   }
 
   return (
-    <div>
-      <form className="w-[240px] flex justify-center items-center mx-auto m-8">
-        <div className="relative flex w-full items-center gap-2">
-          <TextField label="Audit Name" variant="outlined" value={name} onChange={handleNameChange}/>
-        </div>
+    <Box padding={3}>
+      <form className="w-full flex justify-center items-center mb-8">
+        <TextField
+          label="Audit Name"
+          variant="outlined"
+          value={name}
+          onChange={handleNameChange}
+          fullWidth
+          sx={{ maxWidth: 300 }}
+        />
       </form>
-      <Board cards={cards} setCards={setCards} />{" "}
-      {/* Pass cards and setCards to Board */}
-      <div className="flex p-10">
-        <button
+      <Board cards={cards} setCards={setCards} />
+      <Box display="flex" justifyContent="flex-end" paddingTop={4}>
+        <Button
           onClick={handleCreateAuditClick}
-          className="absolute bottom-20 right-16 p-2 bg-blue-500 text-white rounded">
-            Audit erstellen
-        </button>
-      </div>
-    </div>
+          variant="contained"
+          color="primary"
+        >
+          Audit erstellen
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
 // The Board component renders two columns and manages the state of the cards
 const Board = ({ cards, setCards }) => {
   return (
-    <div className="flex justify-center gap-10 h-[calc(80vh-192px)] w-full overflow-hidden p-4">
-      <Column
-        title="Verfügbare Kategorien"
-        column="Verfügbare Kategorien"
-        headingColor="text-neutral-700"
-        cards={cards}
-        setCards={setCards}
-      />
-      <Column
-        title="Ausgewählte Kategorien"
-        column="Ausgewählte Kategorien"
-        headingColor="text-neutral-700"
-        cards={cards}
-        setCards={setCards}
-      />
-    </div>
+    <Box display="flex" justifyContent="center" gap={2} height="calc(80vh - 192px)" padding={4}>
+      <Column title="Verfügbare Kategorien" column="Verfügbare Kategorien" cards={cards} setCards={setCards} />
+      <Column title="Ausgewählte Kategorien" column="Ausgewählte Kategorien" cards={cards} setCards={setCards} />
+    </Box>
   );
 };
 
 // The Column component represents each column in the board and handles drag-and-drop functionality
-const Column = ({ title, headingColor, column, cards, setCards }) => {
+const Column = ({ title, column, cards, setCards }) => {
   const [active, setActive] = useState(false);
   const filteredCards = cards.filter((c) => c.column === column);
 
@@ -172,7 +181,6 @@ const Column = ({ title, headingColor, column, cards, setCards }) => {
       let cardToTransfer = copy.find((c) => c.id === cardID);
       if (!cardToTransfer) return;
 
-      // Change the column of the transferred card
       cardToTransfer = { ...cardToTransfer, column };
       copy = copy.filter((c) => c.id !== cardID);
 
@@ -189,25 +197,25 @@ const Column = ({ title, headingColor, column, cards, setCards }) => {
   };
 
   return (
-    <div className="w-1/3 shrink-0 bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-      <div className="mb-3 flex items-center justify-between p-4 border-b border-neutral-200">
-        <h3 className={`font-medium ${headingColor}`}>{title}</h3>
-        <span className="rounded text-sm text-neutral-500">
-          {filteredCards.length}
-        </span>
-      </div>
-      <div
+    <Box width="33%" padding={2} bgcolor="white" boxShadow={3} borderRadius={2} display="flex" flexDirection="column">
+      <Box display="flex" justifyContent="space-between" padding={2} borderBottom="1px solid" borderColor="grey.300">
+        <Typography variant="h6">{title}</Typography>
+        <Typography variant="body2" color="textSecondary">{filteredCards.length}</Typography>
+      </Box>
+      <Box
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className="flex-grow p-4 transition-colors overflow-auto"
+        flexGrow={1}
+        padding={2}
+        overflow="auto"
       >
         {filteredCards.map((c) => (
           <Card key={c.id} {...c} handleDragStart={handleDragStart} />
         ))}
         <DropIndicator beforeId="-1" column={column} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
@@ -216,14 +224,20 @@ const Card = ({ title, id, column, handleDragStart }) => {
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
-      <div
-        draggable="true"
+      <Box
+        draggable
         onDragStart={(e) => handleDragStart(e, { title, id, column })}
-        className="cursor-grab rounded border border-neutral-700 bg-neutral-700 p-3 active:cursor-grabbing mb-2" // Set margin-bottom for spacing
-        style={{ height: "50px" }} // Adjust card height as needed
+        marginY={1}
+        padding={2}
+        borderRadius={1}
+        bgcolor="grey.800"
+        color="white"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
       >
-        <p className="text-sm text-neutral-100">{title}</p>
-      </div>
+        <Typography variant="body2">{title}</Typography>
+      </Box>
     </>
   );
 };
@@ -231,10 +245,14 @@ const Card = ({ title, id, column, handleDragStart }) => {
 // The DropIndicator component represents the drop target indicator
 const DropIndicator = ({ beforeId, column }) => {
   return (
-    <div
+    <Box
       data-before={beforeId || "-1"}
       data-column={column}
-      className="my-0.5 h-0.5 w-full bg-red-400 opacity-0"
+      height="2px"
+      width="100%"
+      bgcolor="primary.main"
+      opacity={0}
+      marginY={0.5}
     />
   );
 };

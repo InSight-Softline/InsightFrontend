@@ -1,93 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { FormGroup, FormControlLabel, Checkbox, Button, Alert } from '@mui/material';
-import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
+import { FormGroup, FormControlLabel, Checkbox, Button, Alert, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/system';
 import api from "../api.js";
 import { useParams, useNavigate } from "react-router-dom";
 
-//Styling for the Comment Sections
-const Textarea = styled(BaseTextareaAutosize)(
-  ({ theme }) => `
-    box-sizing: border-box;
-    width: 95%;
-    margin: 2.5%;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 12px;
-    border-radius: 12px 12px 0 12px;
-    color: ${theme.palette.mode === 'dark' ? '#fff' : '#000'};
-    background: ${theme.palette.mode === 'dark' ? '#000' : '#fff'};
-    border: 1px solid ${theme.palette.mode === 'dark' ? '#555' : '#ddd'};
-    &:hover {
-      border-color: #3399FF;
-    }
-    &:focus {
-      outline: 0;
-      border-color: #3399FF;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-    }
-    &:focus-visible {
-      outline: 0;
-    }
-  `
+// Styled Textarea component using MUI's system styling
+const StyledTextarea = styled(TextareaAutosize)(
+  ({ theme }) => ({
+    boxSizing: 'border-box',
+    width: '95%',
+    margin: '2.5%',
+    fontFamily: 'IBM Plex Sans, sans-serif',
+    fontSize: '0.875rem',
+    lineHeight: '1.5',
+    padding: '12px',
+    borderRadius: '12px 12px 0 12px',
+    color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+    backgroundColor: theme.palette.mode === 'dark' ? '#000' : '#fff',
+    border: `1px solid ${theme.palette.mode === 'dark' ? '#555' : '#ddd'}`,
+    '&:hover': {
+      borderColor: '#3399FF',
+    },
+    '&:focus': {
+      outline: 0,
+      borderColor: '#3399FF',
+      boxShadow: '0 0 0 3px rgba(0, 123, 255, 0.25)',
+    },
+  })
 );
 
-/**
- * Creates the perform audits site, which shows the questions, checkboxes for the rating and a comment section.
- * Error handling for the GET and PATCH requests with alerts. 
- * 
- * @author [Anna Liepelt] https://gitlab.dit.htwk-leipzig.de/anna.liepelt
- */
 function PerformAudit() {
-
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const { auditId } = useParams();
-  
-  /*fetching data from the backend*/
+
   useEffect(() => {
     api.get(`/v1/audits/${auditId}/ratings`)
-        .then(response => {
-            console.log(response);
-            setQuestions(response.data);
-            setLoading(false);
-            })
-            .catch(err => {
-                console.error('Error fetching data:', err);
-                setError(err);
-                setLoading(false);
-            });
-    }, [auditId]);
+      .then(response => {
+        setQuestions(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err);
+        setLoading(false);
+      });
+  }, [auditId]);
 
   const updateQuestionById = (id, newPartialQuestion) => {
-    const q = questions.map(question => id === question.id ? { ...question, ...newPartialQuestion } : question);
-    setQuestions(q);
-  }
+    setQuestions(questions.map(question => 
+      id === question.id ? { ...question, ...newPartialQuestion } : question
+    ));
+  };
 
-  /*PATCH function for sending changes to the backend */
-  const patchQuestion = async (ratingId, newRatings) => {
-    const patchData = newRatings.map((destination) => ({
+  const patchQuestion = (ratingId, newRatings) => {
+    const patchData = newRatings.map(destination => ({
       op: "replace",
       path: `${destination.path}`,
       value: destination.value,
     }));
-    console.log(patchData);
-    api.patch(`/v1/ratings/${ratingId}`, patchData)
-    .then(response => {
-      console.log(response);
-      setLoading(false);
-      })
-      .catch(err => {
-          console.error('Error fetching data:', err);
-          setError(err);
-          setLoading(false);
-      });
-      
+    api.patch(`/v1/ratings/${ratingId}`, patchData).catch(err => setError(err));
   };
 
   const handleCommentInput = (event, id) => {
@@ -96,39 +69,24 @@ function PerformAudit() {
   };
 
   const handleCheckboxChange = (event, label, question) => {
-    const isChecked = event.target.checked
+    const isChecked = event.target.checked;
+    const newQuestion = label === 'N/A' 
+      ? { nA: isChecked, points: null } 
+      : { nA: false, points: isChecked ? label : null };
 
-    if (!isChecked) {
-      const newQuestion = { nA: null, points: null }
-      updateQuestionById(question.id, newQuestion);
-      patchQuestion(question.id, [{ path: "/na", value: newQuestion.nA }, { path: "/points", value: newQuestion.points }]);
-      return
-    }
-
-    switch (label) {
-      case 'N/A':
-        updateQuestionById(question.id, { nA: true, points: null });
-        patchQuestion(question.id, [{ path: "/na", value: true }, { path: "/points", value: null }]);
-        break;
-      default:
-        updateQuestionById(question.id, { points: label, nA: false });
-        patchQuestion(question.id, [{ path: "/na", value: false }, { path: "/points", value: label }]);
-    }
+    updateQuestionById(question.id, newQuestion);
+    patchQuestion(question.id, [
+      { path: "/na", value: newQuestion.nA },
+      { path: "/points", value: newQuestion.points }
+    ]);
   };
 
-  const getChecked = (label, question) => {
-    switch (label) {
-      case 'N/A':
-        return question.nA;
-      default:
-        return question.points === label;
-    }
-  }
+  const getChecked = (label, question) => label === 'N/A' ? question.nA : question.points === label;
 
   const handleAlert = () => {
     setError(null); 
     window.location.reload();
-  }
+  };
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
@@ -150,41 +108,32 @@ function PerformAudit() {
               />
             ))}
           </FormGroup>
-          <Textarea
+          <StyledTextarea
             data-cy="commentTextarea"
-            placeholder='Kommentar eingeben'
-            value={question.comment}
+            placeholder="Kommentar eingeben"
+            value={question.comment || ''}
+            minRows={3}
             onChange={(event) => handleCommentInput(event, question.id)}
             onBlur={(event) => patchQuestion(question.id, [{ path: "/comment", value: event.target.value }])}
           />
         </div>
       ))}
       {error && (
-        <div className="sticky fixed bottom-20 left-0 w-full z-50">
-          <Alert
-            severity="error"
-            onClose={handleAlert}
-          >
-            Fehler: {error.message} | Bitte erneut versuchen.
-          </Alert>
-        </div>
+        <Alert severity="error" onClose={handleAlert}>
+          Fehler: {error.message} | Bitte erneut versuchen.
+        </Alert>
       )}
       {loading && (
-        <div className="sticky fixed bottom-20 left-0 w-full z-50">
-          <Alert
-            severity="info"
-            onClose={() => setLoading(false)}
-          >Laden... Bitte warten.</Alert>
-        </div>
+        <Alert severity="info">Laden... Bitte warten.</Alert>
       )}
       <div style={{ paddingBottom: '100px' }}>
-        <div className="flex justify-center mt-10">
-          <button
-            onClick={() => navigate(`/evaluation/${auditId}`)}
-            className="absolute p-2 right-16 bg-blue-500 text-white rounded">
-            Bewertung anzeigen
-          </button>
-        </div>
+        <Button 
+          onClick={() => navigate(`/evaluation/${auditId}`)}
+          variant="contained" 
+          color="primary"
+          className="mt-10">
+          Bewertung anzeigen
+        </Button>
       </div>
     </div>
   );

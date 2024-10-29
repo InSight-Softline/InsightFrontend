@@ -1,9 +1,10 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
 
-const Title = ({ children }) => (
-    <h1 className="text-center text-4xl m-6">
+const Title = ({ children, variant = "h4" }) => (
+    <Typography variant={variant} align="center" gutterBottom>
         {children}
-    </h1>
+    </Typography>
 );
 
 export default Title;
