@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { LayoutDefault } from "../layouts/LayoutDefault.jsx";  
-import { Table } from "../components/Table/Table.jsx";  
+import { Table } from "../components/Table/Table.jsx";
+import Title from "../components/Title";
+import Text from "../components/Text"; 
 
 export function NewAudit() {
     const [cards] = useState([
@@ -18,20 +20,52 @@ export function NewAudit() {
     const [name, setName] = useState("");
 
     const handleCreateAuditClick = () => {
-        console.log("Audit erstellt:", { name, categories: selectedCategories });
-        alert("Audit erstellt: " + name);
+        if (!name || !companyName) {
+            alert("Bitte sowohl den Auditnamen als auch den Firmennamen eingeben.");
+            return;
+        }
+
+        const auditData = { name, companyName, categories: selectedCategories };
+
+        fetch("/api/audits", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(auditData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Audit erstellt:", data);
+            alert("Audit erfolgreich erstellt: " + name);
+        })
+        .catch(error => {
+            console.error("Fehler beim Erstellen des Audits:", error);
+            alert("Fehler beim Erstellen des Audits");
+        });
     };
 
     return (
         <LayoutDefault>
             <div className="bg-green-200 w-full h-full p-4">
-                <h1 className="text-center text-2xl mb-6">Neues Audit anlegen</h1>
+                <Title>Neues Audit anlegen</Title>
                 
                 <div className="mb-4 flex justify-center">
+                    <Text>Audit Name:</Text>
                     <input 
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         placeholder="Audit Name" 
+                        className="border rounded p-2 w-1/2"
+                    />
+                </div>
+
+                <div className="mb-4 flex justify-center">
+                    <Text>Firmenname:</Text>
+                    <input 
+                        value={companyName} 
+                        onChange={(e) => setCompanyName(e.target.value)} 
+                        placeholder="Firmenname" 
                         className="border rounded p-2 w-1/2"
                     />
                 </div>
