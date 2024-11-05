@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { LayoutDefault } from "../layouts/LayoutDefault.jsx";  
 import { Table } from "../components/Table/Table.jsx";
-import Title from "../components/Title";
-import Text from "../components/Text"; 
+import Title from "../components/Textareas/Title.jsx";
+import Text from "../components/Textareas/Text.jsx"; 
 
 export function NewAudit() {
     const [cards] = useState([
