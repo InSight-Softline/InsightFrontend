@@ -1,3 +1,5 @@
+import Text from 'Text.jsx';
+
 describe('Text Component', () => {
     beforeEach(() => {
       cy.mount(<Text customStyles="test-class">Sample text content</Text>);

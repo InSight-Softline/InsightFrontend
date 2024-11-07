@@ -1,3 +1,5 @@
+import Title from 'Title.jsx';
+
 describe('Title Component', () => {
     beforeEach(() => {
       cy.mount(<Title>Test Title</Title>);
