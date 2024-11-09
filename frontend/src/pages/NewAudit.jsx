@@ -18,14 +18,15 @@ export function NewAudit() {
 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [name, setName] = useState("");
+    const [customerName, setCustomerName] = useState("");
 
     const handleCreateAuditClick = () => {
-        if (!name || !companyName) {
-            alert("Bitte sowohl den Auditnamen als auch den Firmennamen eingeben.");
+        if (!name || !customerName) {
+            alert("Bitte geben Sie sowohl einen Audit-Namen als auch einen Firmennamen ein.");
             return;
         }
 
-        const auditData = { name, companyName, categories: selectedCategories };
+        const auditData = { name, customerName, categories: selectedCategories };
 
         fetch("/api/audits", {
             method: "POST",
@@ -63,8 +64,8 @@ export function NewAudit() {
                 <div className="mb-4 flex justify-center">
                     <Text>Firmenname:</Text>
                     <input 
-                        value={companyName} 
-                        onChange={(e) => setCompanyName(e.target.value)} 
+                        value={customerName} 
+                        onChange={(e) => setCustomerName(e.target.value)} 
                         placeholder="Firmenname" 
                         className="border rounded p-2 w-1/2"
                     />
