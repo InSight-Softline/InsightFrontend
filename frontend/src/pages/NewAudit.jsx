@@ -16,10 +16,37 @@ export function NewAudit() {
 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [name, setName] = useState("");
+    const [customerName, setCustomerName] = useState("");
 
+    
     const handleCreateAuditClick = () => {
-        console.log("Audit erstellt:", { name, categories: selectedCategories });
-        alert("Audit erstellt: " + name);
+        if (!name || !customerName) {
+            alert("Bitte geben Sie sowohl einen Audit-Namen als auch einen Firmennamen ein.");
+            return;
+        }
+
+        const newAudit = {
+            name,
+            customerName,
+            categories: selectedCategories,
+        };
+
+        fetch("/api/audits", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newAudit),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Audit erstellt:", data);
+            alert("Audit erfolgreich erstellt!");
+        })
+        .catch(error => {
+            console.error("Fehler beim Erstellen des Audits:", error);
+            alert("Fehler beim Erstellen des Audits.");
+        });
     };
 
     return (
@@ -32,6 +59,15 @@ export function NewAudit() {
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         placeholder="Audit Name" 
+                        className="border rounded p-2 w-1/2"
+                    />
+                </div>
+
+                <div className="mb-4 flex justify-center">
+                    <input 
+                        value={customerName} 
+                        onChange={(e) => setCustomerName(e.target.value)} 
+                        placeholder="Firmenname" 
                         className="border rounded p-2 w-1/2"
                     />
                 </div>
