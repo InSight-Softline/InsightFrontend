@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { LayoutDefault } from "../layouts/LayoutDefault.jsx";  
-import { Table } from "../components/Table/Table.jsx";  
+import { Table } from "../components/Table/Table.jsx";
+
 
 export function NewAudit() {
     const [cards] = useState([
@@ -25,7 +26,7 @@ export function NewAudit() {
     return (
         <LayoutDefault>
             <div className="bg-green-200 w-full h-full p-4">
-                <h1 className="text-center text-2xl mb-6">Neues Audit anlegen</h1>
+                <Text>Neues Audit anlegen</Text>
                 
                 <div className="mb-4 flex justify-center">
                     <input 
