@@ -201,10 +201,16 @@ publish-job:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
-    - podman logout --all || true
-    - echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - echo $SSH_KEY > ~/.ssh/id_rsa
+    - REMOTE_USERNAME="stud-fim"
+    - REMOTE_HOST="141.57.8.208"
   script:
-    - podman-compose -f frontend/docker-compose.yml pull
-    - podman-compose -f frontend/docker-compose.yml down
-    - podman-compose -f frontend/docker-compose.yml up -d
+    - |
+      ssh -i ~/.ssh/id_rsa $REMOTE_USERNAME@$REMOTE_HOST << 'EOF'
+      echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+      podman-compose -f frontend/docker-compose.yml pull
+      podman-compose -f frontend/docker-compose.yml down
+      podman-compose -f frontend/docker-compose.yml up -d
+      EOF
+
 
