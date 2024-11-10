@@ -196,8 +196,6 @@ publish-job:
   stage: deploy
   environment: 
     name: production
-  tags:
-    - prod
   #rules:
   #  - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
