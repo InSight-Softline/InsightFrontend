@@ -199,7 +199,7 @@ publish-job:
   #rules:
   #  - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
-    - mkdir .ssh && touch .ssh/id_rsa
+    - mkdir ~/.ssh && touch ~/.ssh/id_rsa
     - echo $SSH_KEY > ~/.ssh/id_rsa
     - REMOTE_USERNAME="stud-fim"
     - REMOTE_HOST="141.57.8.208"
