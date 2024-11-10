@@ -205,7 +205,7 @@ publish-job:
     - cat ~/.ssh/id_rsa
   script:
     - |
-      ssh -i ~/.ssh/id_rsa stud-fim@141.57.8.208 /bin/bash << 'EOT'
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa stud-fim@141.57.8.208 /bin/bash << 'EOT'
       echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
       podman-compose -f frontend/docker-compose.yml pull
       podman-compose -f frontend/docker-compose.yml down
