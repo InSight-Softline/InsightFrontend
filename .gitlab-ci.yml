@@ -208,8 +208,7 @@ publish-job:
     - ssh-keyscan 141.57.8.208 >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ls -la ~/.ssh
-    - ssh -o 'PasswordAuthentication no' -i ~/.ssh/id_ed25519 stud-fim@141.57.8.208 -vvv
+    - ssh -o StrictHostKeyChecking=no 'PasswordAuthentication no' -i ~/.ssh/id_ed25519 stud-fim@141.57.8.208 -vvv
     #echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     #podman-compose -f frontend/docker-compose.yml pull
     #podman-compose -f frontend/docker-compose.yml down
