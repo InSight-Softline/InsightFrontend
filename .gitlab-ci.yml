@@ -202,8 +202,9 @@ publish-job:
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
     - eval $(ssh-agent -s)
     - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
+    - mkdir -p ~/.ssh && mkdir ~/.ssh/id_ed25519
+    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_ed25519
+    - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
     - ssh-keyscan 141.57.8.208 >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
