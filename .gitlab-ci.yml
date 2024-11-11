@@ -31,8 +31,7 @@ stages:
 #    - echo "Running Cypress e2e tests..."
 #    - npm run dev &                             # Start the server in the background
 #    - npx cypress run                           # Run Cypress end-to-end tests
-#    - echo "Cypress e2e tests completed"
-
+#    - echo "Cypress e2e tests completed"                              
 
 #test-integration:
  # stage: test
@@ -201,7 +200,6 @@ publish-job:
   #rules:
   #  - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
-    - whoami
     - podman logout --all || true
     - echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
   script:
