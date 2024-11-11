@@ -196,23 +196,15 @@ publish-job:
   stage: deploy
   environment: 
     name: production
+  tags:
+    - prod
   #rules:
   #  - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
-    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
-    - eval $(ssh-agent -s)
-    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh && touch ~/.ssh/id_ed25519
-    - chmod 600 ~/.ssh && chmod 600 ~/.ssh/id_ed25519
-    - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
-    - ssh-keyscan 141.57.8.208 >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+    - podman logout --all || true
+    - echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
   script:
-    - ssh  -i ~/.ssh/id_ed25519 stud-fim@141.57.8.208 -vvv
-    #echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-    #podman-compose -f frontend/docker-compose.yml pull
-    #podman-compose -f frontend/docker-compose.yml down
-    #podman-compose -f frontend/docker-compose.yml up -d
-    #EOT
-
+    - podman-compose -f frontend/docker-compose.yml pull
+    - podman-compose -f frontend/docker-compose.yml down
+    - podman-compose -f frontend/docker-compose.yml up -d
 
