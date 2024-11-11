@@ -199,13 +199,16 @@ publish-job:
   #rules:
   #  - if: $CI_COMMIT_REF_NAME == "main"
   before_script:
-    - mkdir ~/.ssh && touch ~/.ssh/id_rsa
-    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
-    - echo $SSH_KEY > ~/.ssh/id_rsa
-    #- cat ~/.ssh/id_rsa
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
     - |
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa stud-fim@141.57.8.208 /bin/bash << 'EOT'
+      ssh -o StrictHostKeyChecking=no stud-fim@141.57.8.208 /bin/bash << 'EOT'
       echo -n "${CI_REGISTRY_PASSWORD}" | podman login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
       podman-compose -f frontend/docker-compose.yml pull
       podman-compose -f frontend/docker-compose.yml down
