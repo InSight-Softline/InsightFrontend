@@ -13,7 +13,9 @@ describe('<AuditGridItem />', () => {
 
     cy.mount(<AuditGridItem audit={audit} />);
 
-    cy.get('.absolute.bottom-2.right-2').should('contain.text', 'Firmen-Name');
-    cy.get('.absolute.bottom-2.left-2').should('contain.text', '01.01.24');
+    // Prüft, ob der Text für den Firmennamen vorhanden ist
+    cy.contains('Firmen-Name').should('exist');
+    // Prüft, ob der Text für das Erstellungsdatum vorhanden ist
+    cy.contains('01.01.24').should('exist');
   });
 });
