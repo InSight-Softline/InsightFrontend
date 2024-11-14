@@ -1,5 +1,5 @@
 import {Autocomplete, debounce, TextField} from '@mui/material';
-import {useCallback, useMemo, useRef, useState} from "react";
+import {useCallback, useMemo} from "react";
 
 
 export const TextSearch = ({
@@ -8,19 +8,19 @@ export const TextSearch = ({
                            }) => {
     const setValue = useCallback((newValue) => {
         onChange(newValue);
-    }, [])
+    }, [onChange])
 
     const debounceSearchUpdate = useMemo(
         () =>
             debounce((value) => {
                 onSearchChange(value);
             }, debounceTime),
-        [],
+        [debounceTime, onSearchChange],
     );
 
     const onInputChange = useCallback((event) => {
         debounceSearchUpdate(event.target.value);
-    }, [])
+    }, [debounceSearchUpdate])
 
     return (
         <Autocomplete
