@@ -1,6 +1,6 @@
-image: node:20 
+image: node:20
 
-stages:          
+stages:
   - test
   - sonar
   - build
@@ -33,18 +33,16 @@ stages:
 #    - npx cypress run                           # Run Cypress end-to-end tests
 #    - echo "Cypress e2e tests completed"
 
-
 #test-integration:
- # stage: test
-  #extends:
-    #- .setupCypress
- # script:
-   # - echo "Running integration tests..."
-   # - npm run dev &                          # Start the server in the background
-   # - sleep 20                               # Wait for the server to start (adjust time as needed)
-   # - npm run integration-test               # Run integration tests
-   # - echo "Integration tests completed"
-
+# stage: test
+#extends:
+#- .setupCypress
+# script:
+# - echo "Running integration tests..."
+# - npm run dev &                          # Start the server in the background
+# - sleep 20                               # Wait for the server to start (adjust time as needed)
+# - npm run integration-test               # Run integration tests
+# - echo "Integration tests completed"
 
 test-lint:
   stage: test
@@ -55,10 +53,8 @@ test-lint:
     - echo "Running linting..."
     #- pwd                                        # use for debugging
     #- ls                                         # use for debugging
-    - npm run lint                                # Run ESLint for linting
+    - npm run lint # Run ESLint for linting
     - echo "Linting completed"
-
-
 
 #test-coverage:
 #  stage: test
@@ -77,35 +73,34 @@ test-lint:
 #      - frontend/coverage/
 #    expire_in: 1 days
 
-# SONAR STAGE
-sonarqube-check:
-  stage: sonar
-  image: 
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [""]
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-#  dependencies:
-#    - test-coverage
-  script:
-    - cd frontend
-    - sonar-scanner               # use -X for debugging
-  allow_failure: true
-  #only:
-    #- merge_requests
-    #- master
-    #- main
-    #- develop
-
+# # SONAR STAGE
+# sonarqube-check:
+#   stage: sonar
+#   image:
+#     name: sonarsource/sonar-scanner-cli:latest
+#     entrypoint: [""]
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+#     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+# #  dependencies:
+# #    - test-coverage
+#   script:
+#     - cd frontend
+#     - sonar-scanner               # use -X for debugging
+#   allow_failure: true
+#   #only:
+#     #- merge_requests
+#     #- master
+#     #- main
+#     #- develop
 
 # BUILD STAGE
-frontend-build-job:       
-  image: node:20 
+frontend-build-job:
+  image: node:20
   stage: build
   environment: production
   extends:
@@ -164,7 +159,6 @@ docker-release-job:
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     - echo "[*] Image Build & Deployment was executed."
 
-
 #RELEASE STAGE
 docker-release-job-fullstack:
   image: docker:20
@@ -190,11 +184,10 @@ docker-release-job-fullstack:
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack
     - echo "[*] Image Build & Deployment was executed."
 
-
 #DEPLOYMENT STAGE
 publish-job:
   stage: deploy
-  environment: 
+  environment:
     name: production
   tags:
     - prod
@@ -207,4 +200,3 @@ publish-job:
     - podman-compose -f frontend/docker-compose.yml pull
     - podman-compose -f frontend/docker-compose.yml down
     - podman-compose -f frontend/docker-compose.yml up -d
-

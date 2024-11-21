@@ -20,11 +20,17 @@ export function NewAudit() {
   const navigate = useNavigate();
 
   const handleCreateAuditClick = () => {
+
+    if (!name || !customer) {
+      alert("Bitte geben Sie sowohl einen Audit-Namen als auch einen Firmennamen ein.");
+      return;
+    }
+
     api
-      .post("/v1/audits/new", {
+      .post("/v1/audits/new" , {
         name: name,
+        customer: customer,
         categories: selectedCategories,
-        customer: customer
       })
       .then((response) => {
         navigate("/perform-audit/" + response.data.id);
@@ -37,6 +43,9 @@ export function NewAudit() {
 
   const handleNameChange = (e) => {
     setName(e.target.value);
+  };
+  const handleCustomerNameChange = (e) => {
+    setCustomer(e.target.value);
   };
 
   useEffect(() => {
@@ -94,7 +103,7 @@ export function NewAudit() {
     <LayoutDefault>
       <div>
         <h1 className="text-center text-4xl m-6">Neues Audit anlegen</h1>
-        <form className="w-[240px] flex justify-center items-center mx-auto m-8">
+        <form className="flex justify-center items-center mx-auto m-8">
           <div className="flex flex-col gap-2">
             <TextField
               label="Audit Name"
