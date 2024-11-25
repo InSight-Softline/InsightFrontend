@@ -165,9 +165,9 @@ docker-release-job:
     - PIPELINE_TAG="mr-${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
 
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
-    - docker tag gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$PIPELINE_TAG-latest
+    - docker tag gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest-$PIPELINE_TAG
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
-    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$PIPELINE_TAG-latest
+    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest-$PIPELINE_TAG
 
     - echo "[*] Image Build & Deployment was executed."
 
@@ -197,9 +197,9 @@ docker-release-job-fullstack:
     - PIPELINE_TAG="mr-${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
 
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack .
-    - docker tag gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$PIPELINE_TAG-fullstack
+    - docker tag gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack-$PIPELINE_TAG
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack
-    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:$PIPELINE_TAG-fullstack
+    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack-$PIPELINE_TAG
 
     - echo "[*] Image Build & Deployment was executed."
 
