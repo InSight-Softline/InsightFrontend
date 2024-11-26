@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard.jsx';
 import NewAudit from './components/NewAudit.jsx';
 import PerformAudit from './components/PerformAudit.jsx';
 import Evaluation from './components/Evaluation.jsx';
+import NewCategory from './pages/NewCategory.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import './index.css';
 
@@ -66,6 +67,7 @@ function App() {
                             <Route path="/newAudit" element={<NewAudit/>}/>
                             <Route path="/performAudit/:auditId" element={<PerformAudit/>}/>
                             <Route path="/evaluation/:auditId" element={<Evaluation/>}/>
+                            <Route path="/new-category" element={<NewCategory />}></Route>
                         </Routes>
                     </ThemeProvider>
                 </div>
