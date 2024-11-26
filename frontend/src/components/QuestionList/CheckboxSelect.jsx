@@ -1,42 +1,36 @@
 import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
-import React, {useState} from "react";
+import React from "react";
 
 /**
- * CheckboxSelect-Komponente
+ * CheckboxSelect Component
  *
- * Eine React-Komponente, die eine Gruppe von Checkboxen basierend auf den bereitgestellten Optionen rendert.
- * Es kann immer nur eine Checkbox gleichzeitig ausgewählt sein, und das Label der ausgewählten Checkbox
- * wird an die onChange-Rückruffunktion übergeben.
+ * A React component that renders a group of checkboxes based on the provided options.
+ * Only one checkbox can be selected at a time, and the label of the selected checkbox
+ * is passed to the onChange callback function.
  *
  * @component
- * @param {Object} props - Die Eigenschaften für die Komponente.
- * @param {string} props.value - Der aktuell ausgewählte Wert.
- * @param {Array<string>} props.options - Ein Array mit den Labels für jede Checkbox-Option.
- * @param {function} props.onChange - Rückruffunktion, um Änderungen der Auswahl zu behandeln.
- *
- * @example
- * <CheckboxSelect
- *     value={selectedOption}
- *     options={["Option 1", "Option 2", "Option 3"]}
- *     onChange={(newValue) => setSelectedOption(newValue)}
- * />
+ * @param value - The currently selected value.
+ * @param {Array.<string|number>} options - An array containing the labels for each checkbox option.
+ * @param {function} onChange - Callback function to handle selection changes.
+ * This function takes the new value and a boolean if the box was checked or unchecked as its argument.
+ * @returns {Element}
+ * @constructor
  */
 
 export function CheckboxSelect({ value, options, onChange }) {
 
     /**
-     * Behandelt Änderungen des Checkbox-Status.
+     * Handles changes to the checkbox status.
      *
-     * @param {Object} event - Das durch die Checkbox-Änderung ausgelöste Ereignis.
-     * @param {string} label - Das Label der Checkbox, die geändert wurde.
+     * @param {Object} event - The event triggered by a checkbox change.
+     * @param {string} label - The label of the checkbox that was changed.
      */
     const handleCheckboxChange = (event, label) => {
         const isChecked = event.target.checked;
-
-        if (!isChecked) {
-            onChange(null);
-        } else {
+        if (isChecked) {
             onChange(label);
+        } else {
+            onChange(null);
         }
     }
 

@@ -14,7 +14,7 @@ function App() {
                 <Route path="/" element={<Index />}></Route>
                 <Route path="/dashboard" element={<Dashboard />}></Route>
                 <Route path="/new-audit" element={<NewAudit />}></Route>
-                <Route path="/perform-audit" element={<PerformAudit />}></Route>
+                <Route path="/perform-audit/:auditId" element={<PerformAudit />}></Route>
                 <Route path="/evaluation" element={<Evaluation />}></Route>
             </Routes>
         </HashRouter>

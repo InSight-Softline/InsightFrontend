@@ -24,7 +24,7 @@ describe('CheckboxSelect Component', () => {
     });
 
     it('kann eine Checkbox abwählen und die onChange-Funktion mit null aufrufen', () => {
-        cy.mount(<CheckboxSelect options={options} value={'Option 1'} onChange={cy.stub().as('onChange')} />);
+        cy.mount(<CheckboxSelect options={options} value={'Option 1'} onChange={cy.spy().as('onChange')} />);
         const selectedOption = options[0];
         cy.contains(selectedOption).find('input[type="checkbox"]').uncheck();
         cy.get('@onChange').should('have.been.calledWith', null);

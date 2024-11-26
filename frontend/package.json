@@ -12,6 +12,7 @@
     "test:coverage": "cypress run && nyc report --reporter=lcov"
   },
   "dependencies": {
+    "@cypress/react18": "^2.0.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -37,7 +38,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "babel-plugin-istanbul": "^7.0.0",
-    "cypress": "^13.13.1",
+    "cypress": "^13.15.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
