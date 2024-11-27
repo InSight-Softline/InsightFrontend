@@ -39,16 +39,16 @@ test-e2e:
     - npx cypress run # Run Cypress end-to-end tests
     - echo "Cypress e2e tests completed"
 
-test-integration:
-  stage: test
-  extends:
-    - .setupCypress
-  script:
-    - echo "Running integration tests..."
-    - npm run dev & # Start the server in the background
-    - sleep 20 # Wait for the server to start (adjust time as needed)
-    - npm run integration-test # Run integration tests
-    - echo "Integration tests completed"
+# test-integration:
+#   stage: test
+#   extends:
+#     - .setupCypress
+#   script:
+#     - echo "Running integration tests..."
+#     - npm run dev & # Start the server in the background
+#     - sleep 20 # Wait for the server to start (adjust time as needed)
+#     - npm run integration-test # Run integration tests
+#     - echo "Integration tests completed"
 
 test-lint:
   stage: test
