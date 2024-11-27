@@ -1,3 +1,9 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: never
+    - when: always
+
 image: node:20
 
 stages:
@@ -20,29 +26,29 @@ stages:
     - npm ci --cache .npm --prefer-offline
     - cd -
 
-#test-e2e:
-#  stage: test
-#  image: cypress/base:latest
-#  extends:
-#    - ".setup:npm"
-#  script:
-#    - cd frontend
-#    - npx cypress install
-#    - echo "Running Cypress e2e tests..."
-#    - npm run dev &                             # Start the server in the background
-#    - npx cypress run                           # Run Cypress end-to-end tests
-#    - echo "Cypress e2e tests completed"
+test-e2e:
+  stage: test
+  image: cypress/base:latest
+  extends:
+    - ".setup:npm"
+  script:
+    - cd frontend
+    - npx cypress install
+    - echo "Running Cypress e2e tests..."
+    - npm run dev & # Start the server in the background
+    - npx cypress run # Run Cypress end-to-end tests
+    - echo "Cypress e2e tests completed"
 
-#test-integration:
-# stage: test
-#extends:
-#- .setupCypress
-# script:
-# - echo "Running integration tests..."
-# - npm run dev &                          # Start the server in the background
-# - sleep 20                               # Wait for the server to start (adjust time as needed)
-# - npm run integration-test               # Run integration tests
-# - echo "Integration tests completed"
+test-integration:
+  stage: test
+  extends:
+    - .setupCypress
+  script:
+    - echo "Running integration tests..."
+    - npm run dev & # Start the server in the background
+    - sleep 20 # Wait for the server to start (adjust time as needed)
+    - npm run integration-test # Run integration tests
+    - echo "Integration tests completed"
 
 test-lint:
   stage: test
