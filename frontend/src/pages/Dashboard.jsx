@@ -9,13 +9,7 @@ export function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const audit = {
-    id:1,
-    name: "Audit-Name",
-    customer: "Firmen-Name",
-    date: "01.01.24",
-}
-
+ 
   /* fetching data from backend */
   useEffect(() => {
     api
@@ -41,7 +35,6 @@ export function Dashboard() {
       <div className="bg-green-200 w-full h-full">
         <h1 className="text-center text-2xl mb-6">Dashboard</h1>
         <AuditGrid data={data} loading={loading} error={error} />
-                <AuditGridItem audit={audit}></AuditGridItem>
       </div>
     </LayoutDefault>
   );
