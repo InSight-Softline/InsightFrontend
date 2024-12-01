@@ -3,6 +3,9 @@ import { LayoutDefault } from "../layouts/LayoutDefault.jsx";
 import ProgressBar from '../components/Charts/ProgressBar.jsx';
 import CircularProgress from '../components/Charts/CircularProgress.jsx';
 import BarChart from '../components/Charts/BarChart.jsx';
+import ExportPdfButton from '../components/Utilities/ExportPdfButton';
+import {useParams} from "react-router-dom";
+
 
 /**
  * Evaluation component displaying progress bars and charts for evaluation data.
@@ -18,6 +21,7 @@ export function Evaluation() {
     ]);
     const [pointsDistribution, setPointsDistribution] = useState([3, 5, 2, 8, 4, 6]);
     const colors = ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'];
+    const { auditId } = useParams();
 
     return (
         <LayoutDefault>
@@ -48,6 +52,7 @@ export function Evaluation() {
                 <div id="result_per_question" className={"max-w-full overflow-x-auto pb-10"}>
                     <BarChart data={pointsDistribution} colors={colors} />
                 </div>
+                <ExportPdfButton auditId={auditId} />
             </div>
         </LayoutDefault>
     );
