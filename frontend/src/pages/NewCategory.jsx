@@ -21,23 +21,16 @@ export function NewCategory() {
         setName(name)
     }
 
-    const fetchCategories = (query) => {
-        return api.get("/v1/categories", {
-            params: query
-        })
-    }
-
     return (
         <LayoutDefault>
             <div>
                 <h1>New Category</h1>
-                <QuestionForm
-                    value={{name: question, category: category}}
-                    categoryOptions={categoryOptions}
+                <CategoryForm
+                    value={{name: name}}
                     onChange={handleChange}
                     onSubmit={handleSubmit}
                 >
-                </QuestionForm>
+                </CategoryForm>
             </div>
         </LayoutDefault>
     )
