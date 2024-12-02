@@ -30,7 +30,7 @@ export function Dashboard() {
 
   return (
     <LayoutDefault>
-      <div className="bg-green-200 w-full h-full">
+      <div className="bg-white-200 w-full h-full">
         <h1 className="text-center text-2xl mb-6">Dashboard</h1>
         <AuditGrid data={data} loading={loading} error={error} />
       </div>
