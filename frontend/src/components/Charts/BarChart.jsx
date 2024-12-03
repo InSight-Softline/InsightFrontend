@@ -1,4 +1,5 @@
-import { BarChart } from '@mui/x-charts/BarChart';
+import {BarChart} from '@mui/x-charts/BarChart';
+import ChartWrapper from "./ChartWrapper.jsx";
 
 /**
  * A custom bar chart component displaying a distribution of points.
@@ -9,33 +10,35 @@ import { BarChart } from '@mui/x-charts/BarChart';
  * @param {number} [props.height=350] - The height of the chart.
  * @returns {JSX.Element} A bar chart component.
  */
-const CustomBarChart = ({ data, colors, width = 900, height = 350 }) => {
+const CustomBarChart = ({data, colors, width = 900, height = 350}) => {
     return (
-        <BarChart
-            series={[
-                { data: data },
-            ]}
-            width={width}
-            height={height}
-            xAxis={[
-                {
-                    scaleType: 'band',
-                    data: [0, 1, 2, 3, 4, 5, "nA"],
-                    colorMap: {
-                        type: 'ordinal',
-                        values: [0, 1, 2, 3, 4, 5, "nA"],
-                        colors: colors,
-                        unknownColor: "#050505",
+        <ChartWrapper>
+            <BarChart
+                series={[
+                    {data: data},
+                ]}
+                width={width}
+                height={height}
+                xAxis={[
+                    {
+                        scaleType: 'band',
+                        data: [0, 1, 2, 3, 4, 5, "nA"],
+                        colorMap: {
+                            type: 'ordinal',
+                            values: [0, 1, 2, 3, 4, 5, "nA"],
+                            colors: colors,
+                            unknownColor: "#050505",
+                        },
+                        label: 'Achieved Points',
                     },
-                    label: 'Achieved Points',
-                },
-            ]}
-            yAxis={[
-                {
-                    label: 'Number of Questions',
-                },
-            ]}
-        />
+                ]}
+                yAxis={[
+                    {
+                        label: 'Number of Questions',
+                    },
+                ]}
+            />
+        </ChartWrapper>
     );
 };
 
