@@ -3,7 +3,7 @@ import { LayoutDefault } from "../layouts/LayoutDefault.jsx";
 import ProgressBar from '../components/Charts/ProgressBar.jsx';
 import CircularProgress from '../components/Charts/CircularProgress.jsx';
 import BarChart from '../components/Charts/BarChart.jsx';
-import ExportPdfButton from '../components/Utilities/ExportPdfButton';
+import {ExportPdfButton} from '../components/Utilities/ExportPdfButton';
 import {useParams} from "react-router-dom";
 
 
