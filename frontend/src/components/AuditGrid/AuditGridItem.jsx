@@ -21,3 +21,11 @@ export function AuditGridItem({ audit }) {
         </Link>
     );
 }
+AuditGridItem.propTypes = {
+    audit: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // falls ID numerisch oder string sein kann
+        name: PropTypes.string.isRequired,
+        customer: PropTypes.string.isRequired,
+        createdAt: PropTypes.string.isRequired, // oder PropTypes.instanceOf(Date), wenn `createdAt` ein Date-Objekt ist
+    }).isRequired,
+};
