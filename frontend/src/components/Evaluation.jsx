@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import {BarChart} from '@mui/x-charts/BarChart';
 import LinearProgress from '@mui/material/LinearProgress';
+import Button from '@mui/material/Button';
 import api from "../api.js";
 import {useParams} from "react-router-dom";
+import { exportComponentAsJPEG, exportComponentAsPDF, exportComponentAsPNG } from 'react-component-export-image';
+import { ButtonGroup } from '@mui/material';
 
 function Evaluation() {
     const [responseData, setResponseData] = useState([]);
@@ -135,6 +138,70 @@ function Evaluation() {
         );
     }
 
+    //Evalution Graph Component
+    const EvaluationGraph = React.forwardRef((props, ref) => (
+        <div ref={ref}>
+            <BarChart
+                series={[
+                    {data: pointsDistribution},
+                ]}
+                width="900"
+                height={350}
+                xAxis={[
+                    {
+                        scaleType: 'band',
+                        data: [0, 1, 2, 3, 4, 5],
+                        colorMap: {
+                            type: 'ordinal',
+                            values: [0, 1, 2, 3, 4, 5],
+                            colors: colors,
+                            unknownColor: "#050505",
+                        },
+                        label: 'erreichte Punkte',
+                    },
+                ]}
+                yAxis={[
+                    {
+                        label: 'Anzahl Fragen',
+                    },
+                ]}
+            />
+    </div>
+    ));
+
+    function ExportingGraph() {
+        const componentRef = useRef();
+        return (
+            <Box 
+                sx = {{
+                    display:'flex',
+                    justifyContent:'space-around',
+                    margin:4,
+                }}
+            >
+                <ButtonGroup
+                    variant="outlined"
+                    color="error">
+                    <Button 
+                        onClick={() => {
+                            exportComponentAsJPEG(componentRef);
+                        }}
+                    >Export as JPEG</Button>
+                    <Button 
+                        onClick={() => {
+                            exportComponentAsPDF(componentRef);
+                        }}
+                    >Export as PDF</Button>
+                    <Button 
+                        onClick={() => {
+                            exportComponentAsPNG(componentRef);
+                        }}
+                    >Export as PNG</Button>
+                </ButtonGroup>
+            </Box>
+        );
+    }
+
 
     const colors = ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'];
 
@@ -164,31 +231,8 @@ function Evaluation() {
             <div id="result_per_question"
                  className={"max-w-full overflow-x-auto pb-10"}
                  >
-                <BarChart
-                    series={[
-                        {data: pointsDistribution},
-                    ]}
-                    width="900"
-                    height={350}
-                    xAxis={[
-                        {
-                            scaleType: 'band',
-                            data: [0, 1, 2, 3, 4, 5],
-                            colorMap: {
-                                type: 'ordinal',
-                                values: [0, 1, 2, 3, 4, 5],
-                                colors: colors,
-                                unknownColor: "#050505",
-                            },
-                            label: 'erreichte Punkte',
-                        },
-                    ]}
-                    yAxis={[
-                        {
-                            label: 'Anzahl Fragen',
-                        },
-                    ]}
-                />
+                <EvaluationGraph/>
+                <ExportingGraph/>
             </div>
         </div>
     );
