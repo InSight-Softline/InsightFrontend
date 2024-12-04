@@ -60,24 +60,15 @@ test-lint:
 
 
 
-test-coverage:
+test-component:
   stage: test
   image: cypress/base:latest
   extends:
     - ".setup:npm"
   script:
     - cd frontend
-    - echo "Generating coverage report of tests..."
-    - npx babel src --out-dir src --out-file-extension .jsx
-    - npm run dev &
-    - npx nyc cypress run
+    - npx cypress run --component
     - echo "Report generated successfully!"
-  artifacts:
-    paths:
-      - frontend/coverage/
-    expire_in: 1 days
-
-
 
 
 # SONAR STAGE

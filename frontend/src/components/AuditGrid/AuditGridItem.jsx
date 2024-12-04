@@ -30,6 +30,6 @@ AuditGridItem.propTypes = {
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // falls ID numerisch oder string sein kann
         name: PropTypes.string.isRequired,
         customer: PropTypes.string.isRequired,
-        createdAt: PropTypes.instanceOf(Date), 
+        createdAt: PropTypes.instanceOf(Date),
     }).isRequired,
 };

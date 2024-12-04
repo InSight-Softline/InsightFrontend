@@ -1,4 +1,4 @@
-import Text from 'Text.jsx';
+import Text from './Text.jsx';
 
 describe('Text Component', () => {
     beforeEach(() => {

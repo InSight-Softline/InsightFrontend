@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuditGridItem } from '../components/AuditGrid/AuditGridItem';
+import {AuditGridItem} from "./AuditGridItem.jsx";
 
 describe('<AuditGridItem />', () => {
   it('renders with customer and date information', () => {
@@ -13,8 +13,8 @@ describe('<AuditGridItem />', () => {
     cy.mount(<AuditGridItem audit={audit} />);
 
     // Prüft, ob der Text für den Firmennamen vorhanden ist
-    cy.contains('Firmen-Name').should('exist');
+    cy.contains('Test Company').should('exist');
     // Prüft, ob der Text für das Erstellungsdatum vorhanden ist
-    cy.contains('01.01.24').should('exist');
+    cy.contains('01.01.2024').should('exist');
   });
 })
