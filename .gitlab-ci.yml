@@ -9,7 +9,7 @@ stages:
   - deploy
 
 .setup:npm:
-  cache: # https://docs.gitlab.com/ee/ci/caching/#cache-nodejs-dependencies :)
+  cache: # https://docs.gitlab.com/ee/ci/caching/#cache-nodejs-dependencies
     key:
       files:
         - frontend/package-lock.json
@@ -20,18 +20,19 @@ stages:
     - npm ci --cache .npm --prefer-offline
     - cd -
 
-#test-e2e:
-#  stage: test
-#  image: cypress/base:latest
-#  extends:
-#    - ".setup:npm"
-#  script:
-#    - cd frontend
-#    - npx cypress install
-#    - echo "Running Cypress e2e tests..."
-#    - npm run dev &                             # Start the server in the background
-#    - npx cypress run                           # Run Cypress end-to-end tests
-#    - echo "Cypress e2e tests completed"
+test-e2e:
+  stage: test
+  image: cypress/base:latest
+  extends:
+    - ".setup:npm"
+  script:
+    - cd frontend
+    - npx cypress install
+    - echo "Running Cypress e2e tests..."
+    - npm run dev &                             # Start the server in the background
+    - npx cypress run                           # Run Cypress end-to-end test
+    - echo "Cypress e2e tests completed"
+
 
 #test-integration:
 # stage: test
@@ -56,22 +57,24 @@ test-lint:
     - npm run lint # Run ESLint for linting
     - echo "Linting completed"
 
-#test-coverage:
-#  stage: test
-#  image: cypress/base:latest
-#  extends:
-#    - ".setup:npm"
-#  script:
-#    - cd frontend
-#    - echo "Generating coverage report of tests..."
-#    - npx babel src --out-dir src --out-file-extension .jsx
-#    - npm run dev &
-#    - npx nyc cypress run
-#    - echo "Report generated successfully!"
-#  artifacts:
-#    paths:
-#      - frontend/coverage/
-#    expire_in: 1 days
+
+
+test-coverage:
+  stage: test
+  image: cypress/base:latest
+  extends:
+    - ".setup:npm"
+  script:
+    - cd frontend
+    - echo "Generating coverage report of tests..."
+    - npx babel src --out-dir src --out-file-extension .jsx
+    - npm run dev &
+    - npx nyc cypress run
+    - echo "Report generated successfully!"
+  artifacts:
+    paths:
+      - frontend/coverage/
+    expire_in: 1 days
 
 # # SONAR STAGE
 # sonarqube-check:
