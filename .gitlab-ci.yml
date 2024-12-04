@@ -84,9 +84,9 @@ sonarqube-check:
     key: "${CI_JOB_NAME}"
     paths:
       - .sonar/cache
-  dependencies:
-    - test-coverage    
-  script: 
+#  dependencies:
+#    - test-coverage
+  script:
     - cd frontend
     - sonar-scanner               # use -X for debugging
   allow_failure: true
