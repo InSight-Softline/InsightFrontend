@@ -20,19 +20,19 @@ const CustomBarChart = ({ data, colors, width = 900, height = 350 }) => {
             xAxis={[
                 {
                     scaleType: 'band',
-                    data: [0, 1, 2, 3, 4, 5, "nA"],
+                    data: [0, 1, 2, 3, 4, 5],
                     colorMap: {
                         type: 'ordinal',
-                        values: [0, 1, 2, 3, 4, 5, "nA"],
+                        values: [0, 1, 2, 3, 4, 5],
                         colors: colors,
                         unknownColor: "#050505",
                     },
-                    label: 'Achieved Points',
+                    label: 'erreichte Punkte',
                 },
             ]}
             yAxis={[
                 {
-                    label: 'Number of Questions',
+                    label: 'Anzahl Fragen',
                 },
             ]}
         />
