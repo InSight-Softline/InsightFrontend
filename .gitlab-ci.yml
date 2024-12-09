@@ -166,7 +166,7 @@ docker-release-job:
     - echo -n "${CI_REGISTRY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
-    - docker push ghcr.io/Syrimx/softlineInsightFrontend:latest # pushing the image to github container repo
+    - docker push ghcr.io/syrimx/softlineinsightfrontend:latest # pushing the image to github container repo
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     - echo "[*] Image Build & Deployment was executed."
 
@@ -195,7 +195,7 @@ docker-release-job-fullstack:
     - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack .
-    - docker push ghcr.io/Syrimx/softlineInsightFrontend:fullstack # pushing the image to github container repo
+    - docker push ghcr.io/syrimx/softlineinsightfrontend:fullstack # pushing the image to github container repo
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack
     - echo "[*] Image Build & Deployment was executed."
 
