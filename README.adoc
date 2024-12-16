@@ -1,0 +1,40 @@
+= InSight Frontend
+
+== Overview
+
+This repository contains the frontend for the InSight project. The frontend is a JavaScript application that uses vite as package manager. +
+This project documentation can be found in the https://gitlab.dit.htwk-leipzig.de/projekt2024-s-audit-tool/insight[Insight Repository].
+
+== Setup
+
+*Clone frontend project*
+[source, shell]
+----
+git clone https://gitlab.dit.htwk-leipzig.de/projekt2024-s-audit-tool/frontend.git
+----
+
+*Move to source code folder "frontend"*
+[source, shell]
+----
+cd ./frontend/
+----
+
+*Copy the .env.example to .env.local*
+[source, shell]
+----
+cp .env.example .env.local
+----
+
+*Install NPM dependences*
+[source, shell]
+----
+npm install
+----
+
+*Run the application*
+[source,bash]
+----
+npm run dev
+----
+
+

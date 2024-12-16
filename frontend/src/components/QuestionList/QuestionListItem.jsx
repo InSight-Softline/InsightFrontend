@@ -1,7 +1,7 @@
 import { FormGroup} from "@mui/material";
 import React, {useMemo} from "react";
 import {CheckboxSelect} from "./CheckboxSelect.jsx";
-import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/system';
 
 /**
@@ -20,17 +20,18 @@ import { styled } from '@mui/system';
  */
 export function QuestionListItem({ question, options, onChange }) {
     //Styling for the Comment Sections
-    const Textarea = useMemo(()=>styled(BaseTextareaAutosize)(
+    const Textarea = useMemo(()=>styled(TextareaAutosize)(
         ({ theme }) => `
     box-sizing: border-box;
-    width: 95%;
-    margin: 2.5%;
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 0%;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5;
-    padding: 12px;
-    border-radius: 12px 12px 0 12px;
+    padding: 8px;
+    border-radius: 12px 12px 0px 12px;
     color: ${theme.palette.mode === 'dark' ? '#fff' : '#000'};
     background: ${theme.palette.mode === 'dark' ? '#000' : '#fff'};
     border: 1px solid ${theme.palette.mode === 'dark' ? '#555' : '#ddd'};
@@ -98,15 +99,17 @@ export function QuestionListItem({ question, options, onChange }) {
     }
 
     return (
-        <div key={question.id}>
-            <h2 className="px-10 py-5" data-cy="question-text">{question.question}</h2>
-            <FormGroup className="px-5 flex justify-center" row>
-                <CheckboxSelect
-                    value={insertValue()}
-                    options={options}
-                    onChange={handleCheckboxChange}
-                />
-            </FormGroup>
+        <div key={question.id} className="px-10 py-1">
+            <div className="flex items-center justify-between">
+                <h3 className="w-3/5" data-cy="question-text">{question.question}</h3>
+                <FormGroup className="w-2/5 flex justify-end" row>
+                    <CheckboxSelect
+                        value={insertValue()}
+                        options={options}
+                        onChange={handleCheckboxChange}
+                    />
+                </FormGroup>
+            </div>
             <Textarea
                 data-cy="question-comment"
                 placeholder='Kommentar eingeben'
