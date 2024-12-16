@@ -11,8 +11,10 @@ import React from 'react';
  */
 export function ExportPdfButton({ auditId, endpoint }) {
     const downloadPdf = async () => {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/ratings/${auditId}/export`, {
+            const response = await fetch(`${backendUrl}/v1/ratings/${auditId}/export`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/pdf' },
             });
