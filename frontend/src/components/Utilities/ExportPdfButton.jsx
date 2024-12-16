@@ -27,7 +27,10 @@ export function ExportPdfButton({ auditId, endpoint }) {
             link.href = url;
             link.download = `Audit_${auditId}_Report.pdf`;
             link.click();
-            window.URL.revokeObjectURL(url);
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+            }, 500);
+
         } catch (error) {
             console.error('Error downloading PDF:', error);
         }
