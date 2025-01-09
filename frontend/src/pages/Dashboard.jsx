@@ -13,21 +13,21 @@ export function Dashboard() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [customerName, setCustomerName] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const [debouncedCustomerName, setDebouncedCustomerName] = useState(customerName);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
-    const debouncedCustomerUpdate = useMemo(
+    const debouncedSearchUpdate = useMemo(
         () =>
             debounce((value) => {
-                setDebouncedCustomerName(value);
+                setDebouncedSearchTerm(value);
             }, 300),
-        [setDebouncedCustomerName],
+        [setDebouncedSearchTerm]
     );
 
-    const handleCustomerFilterChange = (e) => {
-        setCustomerName(e.target.value);
-        debouncedCustomerUpdate(e.target.value);
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        debouncedSearchUpdate(e.target.value);
     };
 
     // Use the custom loading progress hook
@@ -55,7 +55,7 @@ export function Dashboard() {
         api
             .get("/v1/audits", {
                 params: {
-                    search: debouncedCustomerName?.length ? debouncedCustomerName : undefined,
+                    search: debouncedSearchTerm?.length ? debouncedSearchTerm : undefined,
                 },
             })
             .then((response) => {
@@ -65,8 +65,8 @@ export function Dashboard() {
             .catch((err) => {
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
-            })
-    }, [debouncedCustomerName]);
+            });
+    }, [debouncedSearchTerm]);
 
     if (loading) {
         return <LoadingScreen progress={loadingProgress} message="Loading, please wait..." />;
@@ -80,7 +80,7 @@ export function Dashboard() {
         <LayoutDefault>
             <div className="w-full h-full p-5">
                 <Title>Dashboard</Title>
-                <TextField id="outlined-basic" label="Suche" variant="outlined" onChange={handleCustomerFilterChange} />
+                <TextField id="outlined-basic" label="Suche" variant="outlined" onChange={handleSearchChange} />
                 <AuditGrid data={data} loading={loading} error={error} />
             </div>
         </LayoutDefault>
