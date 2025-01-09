@@ -55,7 +55,7 @@ export function Dashboard() {
         api
             .get("/v1/audits", {
                 params: {
-                    customer: debouncedCustomerName?.length ? debouncedCustomerName : undefined,
+                    search: debouncedCustomerName?.length ? debouncedCustomerName : undefined,
                 },
             })
             .then((response) => {
@@ -63,7 +63,6 @@ export function Dashboard() {
                 setError(null);
             })
             .catch((err) => {
-                // Use the helper function
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
             })
@@ -81,8 +80,7 @@ export function Dashboard() {
         <LayoutDefault>
             <div className="w-full h-full p-5">
                 <Title>Dashboard</Title>
-                <h2 className="font-bold">Filter</h2>
-                <TextField id="outlined-basic" label="Kundenname" variant="outlined" onChange={handleCustomerFilterChange} />
+                <TextField id="outlined-basic" label="Suche" variant="outlined" onChange={handleCustomerFilterChange} />
                 <AuditGrid data={data} loading={loading} error={error} />
             </div>
         </LayoutDefault>
