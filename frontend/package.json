@@ -12,17 +12,17 @@
     "test:coverage": "cypress run && nyc report --reporter=lcov"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.20",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^5.16.9",
+    "@mui/material": "^5.16.9",
     "@mui/x-charts": "^7.7.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.28.0",
     "styled-components": "^6.1.11",
     "tailwindcss": "^3.4.4"
   },
