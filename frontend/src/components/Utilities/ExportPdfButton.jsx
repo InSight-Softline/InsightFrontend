@@ -9,12 +9,11 @@ import React from 'react';
  * @returns {JSX.Element} A button component for initiating the PDF download.
  * @constructor
  */
-export function ExportPdfButton({ auditId, endpoint }) {
-    const downloadPdf = async () => {
+export const downloadPdf = async (auditId) => {
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
         try {
-            const response = await fetch(`${backendUrl}/v1/ratings/${auditId}/export`, {
+            const response = await fetch(`${backendUrl}/v1/audits/${auditId}/export`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/pdf' },
             });
@@ -38,12 +37,4 @@ export function ExportPdfButton({ auditId, endpoint }) {
         }
     };
 
-    return (
-        <button
-            onClick={downloadPdf}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-        >
-            Download PDF
-        </button>
-    );
-}
+

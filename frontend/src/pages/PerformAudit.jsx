@@ -9,6 +9,8 @@ import { handleApiError } from "../utils/handleApiError";
 import { LoadingScreen } from "../components/LoadingState";
 import { AlertWithMessage } from "../components/ErrorHandling";
 import { useLoadingProgress } from "../components/LoadingState/useLoadingProgress";
+import { downloadPdf } from "../components/Utilities/ExportPdfButton.jsx";
+
 
 /**
  * PerformAudit Component
@@ -192,13 +194,22 @@ export function PerformAudit() {
                 options={labels}
                 onChange={handleQuestionUpdate}
             />
-            <div className="flex justify-end mr-8">
+            <div className="flex justify-end mr-8 space-x-4">
                 <Button
                     onClick={() => navigate(`/evaluation/${auditId}`)}
                     variant="contained"
+                    color="primary"
                 >
                     Bewertung anzeigen
                 </Button>
+                <Button
+                        onClick={() => downloadPdf(auditId)}
+                        variant="contained"
+                        color="primary"
+
+                    >
+                        Download PDF
+                    </Button>
             </div>
         </LayoutDefault>
     );

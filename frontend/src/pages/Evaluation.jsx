@@ -14,19 +14,15 @@ import {Button} from "@mui/material";
 import { useLoadingProgress } from "../components/LoadingState/useLoadingProgress";
 
 /**
- * Evaluation component displaying progress bars and charts for evaluation data.
+ * Evaluation component fetches audit data and displays it as a series of progress indicators,
+ * including an overall progress bar, circular progress indicators for each category,
+ * and a bar chart representing question ratings.
+ *
  * @component
+ * @returns {JSX.Element} A layout component rendering the evaluation details.
  */
 export function Evaluation() {
-
-    // Daten später durch Backend erhalten?
-    const [mainProgress, setMainProgress] = useState(75);
-    const [categoryProgress, setCategoryProgress] = useState([
-        { id: 1, name: 'Kategorie 1', progress: 60 },
-        { id: 2, name: 'Kategorie 2', progress: 80 },
-    ]);
-    const [pointsDistribution, setPointsDistribution] = useState([3, 5, 2, 8, 4, 6]);
-    const colors = ['#a50026', '#d73027', '#fdae61', '#d9ef8b', '#66bd63', '#006837'];
+    // Extract audit ID from the route parameters to dynamically load audit data
     const { auditId } = useParams();
 
     /**
@@ -127,14 +123,8 @@ export function Evaluation() {
                     <p className="text-center text-xl">Gesamtfortschritt</p>
                 </div>
 
-                <div id="result" className={"w-full flex flex-col justify-center items-center h-20 mb-6"}>
-                    <div className={"text-center w-4/5"}>
-                        <ProgressBar value={mainProgress} />
-                    </div>
-                    <p className={"text-center text-xl"}>Gesamtfortschritt</p>
-                </div>
-
-                <div id="categories" className="w-full grid grid-cols-1 gap-6 mb-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {/* Category Progress Circular Charts */}
+                <div className="w-full grid grid-cols-1 gap-6 mb-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {categoryProgress.map(category => (
                         <div  data-cy={"CircularChart"} key={category.categoryName} className="flex flex-col items-center">
                             <CircularProgressWithLabel value={category.currentCategoryProgress} label={category.categoryName} size={60} />
