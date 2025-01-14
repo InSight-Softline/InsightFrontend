@@ -36,6 +36,21 @@ export function Dashboard() {
     useEffect(() => {
         setLoading(true);
         api
+            .get("/v1/audits")
+            .then((response) => {
+                setData(response.data);
+                setError(null);
+            })
+            .catch((err) => {
+                // Use the helper function
+                const errorMessage = handleApiError(err);
+                setError(errorMessage);
+            })
+            .finally(() => setLoading(false));
+    }, []);
+
+    useEffect(() => {
+        api
             .get("/v1/audits", {
                 params: {
                     search: debouncedSearchTerm?.length ? debouncedSearchTerm : undefined,
@@ -51,7 +66,6 @@ export function Dashboard() {
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
             })
-            .finally(() => setLoading(false));
     }, [debouncedSearchTerm]);
 
     if (loading) {
