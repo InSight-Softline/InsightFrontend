@@ -1,61 +1,30 @@
+import React from 'react';
 
 /**
- * Evaluation Page Snapshot Tests
+ * Evaluation Page Tests
  *
- * This test suite verifies the snapshot rendering of key components on the Evaluation page.
- * The page displays overall progress, as well as progress and ratings across multiple categories.
- * Snapshot tests ensure the visual consistency of the components when changes are made to the code.
+ * This test suite verifies the correct rendering of the Evaluation page components,
+ * including the progress bar and radar chart, with mock API responses.
  */
 
-//describe('Evaluation Page Snapshot Tests', () => {
-
+describe('Evaluation Page Tests', () => {
     /**
-     * beforeEach Hook
-     *
      * Sets up the state before each test by intercepting a mock API call and visiting the page.
-     *
-     * 1. The API response for progress data (`/v1/audits/1/progress`) is intercepted and populated with data:
-     *    - Overall progress: 85%
-     *    - Progress by category:
-     *      - Customer Service: 70%
-     *      - Product Quality: 90%
-     *      - Compliance: 100%
-     *      - Safety Standards: 80%
-     *      - Employee Satisfaction: 60%
-     *    - Question count by rating:
-     *      - 0 points: 2 questions
-     *      - 1 point: 1 question
-     *      - 2 points: 3 questions
-     *      - 3 points: 5 questions
-     *      - 4 points: 2 questions
-     *      - 5 points: 7 questions
-     *      - "Not applicable" (n.a.): 3 questions
-     *
-     * 2. The page is then loaded (`/evaluation/1`), and Cypress waits for the mock API call (`@getProgress`) to complete,
-     *    ensuring that all components render with the provided mock data.
+     * Mock API provides:
+     * - Current audit progress
+     * - Category progress details
      */
-
-    /*
     beforeEach(() => {
-        cy.intercept('GET', 'http://localhost:8080/api/v1/audits/1/progress', {
+        cy.intercept('GET', '/api/v1/audits/1/progress', {
             body: {
-                overallProgress: 85,
-                categoryProgress: {
-                    "Customer Service": 70,
-                    "Product Quality": 90,
-                    "Compliance": 100,
-                    "Safety Standards": 80,
-                    "Employee Satisfaction": 60,
-                },
-                questionCountByRating: {
-                    0: 2,  // Two questions with 0 points
-                    1: 1,  // One question with 1 point
-                    2: 3,  // Three questions with 2 points
-                    3: 5,  // Five questions with 3 points
-                    4: 2,  // Two questions with 4 points
-                    5: 7,  // Seven questions with 5 points
-                    na: 3  // Three questions marked as "not applicable"
-                },
+                currentAuditProgress: 85,
+                categoryProgress: [
+                    { categoryName: "Customer Service", currentCategoryProgress: 70 },
+                    { categoryName: "Product Quality", currentCategoryProgress: 90 },
+                    { categoryName: "Compliance", currentCategoryProgress: 100 },
+                    { categoryName: "Safety Standards", currentCategoryProgress: 80 },
+                    { categoryName: "Employee Satisfaction", currentCategoryProgress: 60 },
+                ],
             },
         }).as('getProgress');
 
@@ -63,19 +32,21 @@
         cy.visit('http://localhost:5173/#/evaluation/1');
         cy.wait('@getProgress');
     });
-    */
 
     /**
-     * Snapshot Tests
-     *
-     * Each test below captures a snapshot of a specific component on the Evaluation page.
-     * These snapshots are compared to previously saved snapshots to detect unintended visual changes.
+     * Verifies that the ProgressBar displays the correct data.
      */
-    /*
-    it('should match snapshot for ProgressBar', () => {
-        // Capture snapshot of the overall progress bar component
-        cy.compareSnapshot("ProgressBar");
+    it('sollte den korrekten Fortschritt im Fortschrittsbalken anzeigen', () => {
+        cy.get('[data-cy="CurrentProgressBar"]').should('be.visible');
+        cy.get('[data-cy="CurrentProgressBar"]').contains('85%').should('be.visible');
+    });
+
+
+    /**
+     * Verifies that the RadarChart exists.
+     */
+    it('sollte das RadarChart anzeigen', () => {
+        cy.get('[data-cy="RadarChart"]').should('be.visible');
     });
 
 });
-*/

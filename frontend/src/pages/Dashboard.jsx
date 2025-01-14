@@ -36,26 +36,11 @@ export function Dashboard() {
     useEffect(() => {
         setLoading(true);
         api
-            .get("/v1/audits")
-            .then((response) => {
-                setData(response.data);
-                setError(null);
-            })
-            .catch((err) => {
-                // Use the helper function
-                const errorMessage = handleApiError(err);
-                setError(errorMessage);
-            })
-            .finally(() => setLoading(false));
-    }, []);
-
-
-    // Fetch data from backend
-    useEffect(() => {
-        api
             .get("/v1/audits", {
                 params: {
                     search: debouncedSearchTerm?.length ? debouncedSearchTerm : undefined,
+                    sortBy: "createdAt",
+                    sortDirection: "desc",
                 },
             })
             .then((response) => {
@@ -65,7 +50,8 @@ export function Dashboard() {
             .catch((err) => {
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
-            });
+            })
+            .finally(() => setLoading(false));
     }, [debouncedSearchTerm]);
 
     if (loading) {

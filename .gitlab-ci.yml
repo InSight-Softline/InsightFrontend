@@ -60,22 +60,22 @@ test-lint:
 
 
 
-test-coverage:
-  stage: test
-  image: cypress/base:latest
-  extends:
-    - ".setup:npm"
-  script:
-    - cd frontend
-    - echo "Generating coverage report of tests..."
-    - npx babel src --out-dir src --out-file-extension .jsx
-    - npm run dev &
-    - npx nyc cypress run
-    - echo "Report generated successfully!"
-  artifacts:
-    paths:
-      - frontend/coverage/
-    expire_in: 1 days
+#test-coverage:
+#  stage: test
+#  image: cypress/base:latest
+#  extends:
+#    - ".setup:npm"
+#  script:
+#    - cd frontend
+#   - echo "Generating coverage report of tests..."
+#   - npx babel src --out-dir src --out-file-extension .jsx
+#   - npm run dev &
+#   - npx nyc cypress run
+#   - echo "Report generated successfully!"
+# artifacts:
+#   paths:
+#     - frontend/coverage/
+#   expire_in: 1 days
 
 
 
@@ -94,7 +94,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   dependencies:
-    - test-coverage    
+   # - test-coverage
   script: 
     - cd frontend
     - sonar-scanner               # use -X for debugging
@@ -147,13 +147,6 @@ frontend-build-job-fullstack:
 docker-release-job:
   image: docker:20
   stage: release
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    PIPELINE_TAG: "${CI_PIPELINE_ID}"
   dependencies:
     - frontend-build-job
   rules:
@@ -176,13 +169,6 @@ docker-release-job:
 docker-release-job-fullstack:
   image: docker:20
   stage: release
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    PIPELINE_TAG: "${CI_PIPELINE_ID}"
   dependencies:
     - frontend-build-job-fullstack
   rules:

@@ -1,4 +1,5 @@
-import { BarChart } from '@mui/x-charts/BarChart';
+import {BarChart} from '@mui/x-charts/BarChart';
+import DownloadWrapper from "./DownloadWrapper.jsx";
 
 /**
  * A custom bar chart component displaying a distribution of points.
@@ -9,11 +10,14 @@ import { BarChart } from '@mui/x-charts/BarChart';
  * @param {number} [props.height=350] - The height of the chart.
  * @returns {JSX.Element} A bar chart component.
  */
-const CustomBarChart = ({ data, colors, width = 900, height = 350 }) => {
+
+/*
+
+const CustomBarChart = ({data, colors, width = 900, height = 350}) => {
     return (
         <BarChart
             series={[
-                { data: data },
+                {data: data},
             ]}
             width={width}
             height={height}
@@ -40,3 +44,5 @@ const CustomBarChart = ({ data, colors, width = 900, height = 350 }) => {
 };
 
 export default CustomBarChart;
+
+*/
