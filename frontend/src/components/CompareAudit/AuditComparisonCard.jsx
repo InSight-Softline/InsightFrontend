@@ -1,50 +1,43 @@
 import React from "react";
 import ProgressBar from "../Charts/ProgressBar.jsx";
-import CircularProgress from "../Charts/CircularProgress.jsx";
-import BarChart from "../Charts/BarChart.jsx";
+import RadarChart from "../Charts/RadarChart";
+import DownloadWrapper from "../Charts/DownloadWrapper.jsx";
 
 /**
- * AuditComparisonCard component displays detailed comparison data for an audit.
- * Includes overall progress, category-wise progress, and a point distribution chart.
+ * AuditComparisonCard component displays detailed comparison data for a single audit.
+ * Includes overall progress as a progress bar and category-specific progress in a radar chart.
  *
+ * @component
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.name - The name of the audit.
  * @param {number} props.progress - The overall progress of the audit in percentage.
- * @param {Array} props.categories - Array of category progress data, each with a `name` and `progress`.
- * @param {Array} props.distribution - Array representing the point distribution for the bar chart.
+ * @param {Array} props.categoryProgress - Array of category progress data, each containing:
+ *    - {string} categoryName: The name of the category.
+ *    - {number} currentCategoryProgress: The progress percentage for the category.
  * @returns {JSX.Element} A card displaying the audit comparison details.
  */
-export function AuditComparisonCard({ name, progress, categories, distribution }) {
-    const colors = ["#a50026", "#d73027", "#fdae61", "#d9ef8b", "#66bd63", "#006837"]; // Colors for the bar chart
+export function AuditComparisonCard({ name, progress, categoryProgress }) {
+    const labels = categoryProgress?.map(category => category.categoryName) || [];
+    const data = categoryProgress?.map(category => category.currentCategoryProgress) || [];
 
     return (
         <div className="p-4 bg-gray-100 rounded shadow">
-            {/* Audit Name */}
             <h2 className="text-xl font-semibold mb-4">{name}</h2>
 
-            {/* Overall Progress */}
             <div className="mb-4">
                 <ProgressBar value={progress} />
                 <p className="text-center text-sm mt-2">Gesamtfortschritt</p>
             </div>
 
-            {/* Category Progress */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-                {categories.map((category, index) => (
-                    <div key={index} className="text-center">
-                        <CircularProgress value={category.progress} size={60} />
-                        <p className="text-sm mt-2">{category.name}</p>
-                    </div>
-                ))}
+            <DownloadWrapper>
+            <div data-cy={"RadarChart"} className="w-full flex justify-center">
+                {labels.length > 0 && data.length > 0 ? (
+                    <RadarChart labels={labels} currentData={data} width={50} height={50} />
+                ) : (
+                    <p className="text-sm text-gray-500">Keine Daten für Kategorien verfügbar</p>
+                )}
             </div>
-
-            {/* Point Distribution Chart */}
-            <BarChart
-                data={distribution}
-                colors={colors}
-                width={400}
-                height={300}
-            />
+            </DownloadWrapper>
         </div>
     );
 }

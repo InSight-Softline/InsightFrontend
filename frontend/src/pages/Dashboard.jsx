@@ -36,26 +36,11 @@ export function Dashboard() {
     useEffect(() => {
         setLoading(true);
         api
-            .get("/v1/audits")
-            .then((response) => {
-                setData(response.data);
-                setError(null);
-            })
-            .catch((err) => {
-                // Use the helper function
-                const errorMessage = handleApiError(err);
-                setError(errorMessage);
-            })
-            .finally(() => setLoading(false));
-    }, []);
-
-
-    // Fetch data from backend
-    useEffect(() => {
-        api
             .get("/v1/audits", {
                 params: {
                     customer: debouncedCustomerName?.length ? debouncedCustomerName : undefined,
+                    sortBy: "createdAt",
+                    sortDirection: "desc",
                 },
             })
             .then((response) => {
@@ -63,11 +48,13 @@ export function Dashboard() {
                 setError(null);
             })
             .catch((err) => {
-                // Use the helper function
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
             })
+            .finally(() => setLoading(false));
     }, [debouncedCustomerName]);
+    
+    
 
     if (loading) {
         return <LoadingScreen progress={loadingProgress} message="Loading, please wait..." />;

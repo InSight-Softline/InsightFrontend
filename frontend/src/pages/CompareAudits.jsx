@@ -7,12 +7,11 @@ import api from "../api";
 import Title from "../components/Textareas/Title.jsx";
 
 /**
- * CompareAudits Component
- * 
- * Ermöglicht Benutzern, zwei Audits anhand ihrer Fortschritts- und Bewertungsdaten zu vergleichen.
- * Filteroptionen sind verfügbar, um die Dropdown-Liste der Audits nach Kunde und Datum einzuschränken.
- * 
- * @returns {JSX.Element} Die gerenderte CompareAudits-Seite.
+ * CompareAudits component renders a page for comparing two audits.
+ * The user can select a second audit to compare it with the currently selected audit.
+ *
+ * @component
+ * @returns {JSX.Element} A page displaying a comparison of two audits with progress data and a radar chart.
  */
 export function CompareAudits() {
     const { auditId } = useParams();
@@ -23,7 +22,40 @@ export function CompareAudits() {
     const [filters, setFilters] = useState({ customer: "", date: "" });
     const [error, setError] = useState(null);
 
-    // Fetch all audits
+    /**
+     * Fetches audit progress and category-specific progress data from the API.
+     *
+     * @param {number} auditId - The ID of the audit to fetch data for.
+     * @param {Function} setAudit - State setter function for updating the audit data (selectedAudit or secondAudit).
+     * @param {string} errorMessage - Error message to display if the API request fails.
+     */
+    const fetchAuditData = useCallback(async (auditId, setAudit, errorMessage) => {
+        try {
+            const progressResponse = await api.get(`/v1/audits/${auditId}/progress`);
+            console.log("API Response:", progressResponse.data);
+
+            const auditData = {
+                id: auditId,
+                name: allAudits.find(a => a.id === parseInt(auditId))?.name || `Audit ${auditId}`,
+                overallProgress: progressResponse.data.currentAuditProgress || 0,
+                categoryProgress: (progressResponse.data.categoryProgress || []).map(category => ({
+                    categoryName: category.categoryName,
+                    currentCategoryProgress: category.currentCategoryProgress,
+                })),
+            };
+
+            console.log("Processed Audit Data:", auditData);
+
+            setAudit(auditData);
+        } catch (err) {
+            console.error(errorMessage, err);
+            setError(errorMessage);
+        }
+    }, [allAudits]);
+
+    /**
+     * Fetches the list of all available audits for selection.
+     */
     useEffect(() => {
         const fetchAllAudits = async () => {
             try {
@@ -38,41 +70,9 @@ export function CompareAudits() {
         fetchAllAudits();
     }, []);
 
-    // Fetch audit data
-    const fetchAuditData = useCallback(async (auditId, setAudit, errorMessage) => {
-        try {
-            const progressResponse = await api.get(`/v1/audits/${auditId}/progress`);
-            const auditName = allAudits.find(a => a.id === parseInt(auditId))?.name || `Audit ${auditId}`;
-            const categoryProgressArray = (progressResponse.data.categoryProgress || []).map(category => ({
-                name: category.categoryName,
-                progress: category.currentCategoryProgress,
-            }));
-
-            const auditData = {
-                id: auditId,
-                name: auditName,
-                overallProgress: progressResponse.data.currentAuditProgress || 0,
-                categoryProgress: categoryProgressArray,
-            };
-
-            const ratingsResponse = await api.get(`/v1/audits/${auditId}/ratings`);
-            const distribution = [0, 0, 0, 0, 0, 0, 0];
-            ratingsResponse.data.forEach(rating => {
-                if (rating.na === true) {
-                    distribution[6]++;
-                } else if (rating.points !== null) {
-                    distribution[rating.points]++;
-                } else {
-                    distribution[6]++;
-                }
-            });
-
-            setAudit({ ...auditData, distribution });
-        } catch {
-            setError(errorMessage);
-        }
-    }, [allAudits]);
-
+    /**
+     * Fetches data for the selected audit after all audits are loaded.
+     */
     useEffect(() => {
         if (auditId && allAudits.length > 0) {
             fetchAuditData(
@@ -142,17 +142,19 @@ export function CompareAudits() {
                         <AuditComparisonCard
                             name={selectedAudit.name}
                             progress={selectedAudit.overallProgress}
-                            categories={selectedAudit.categoryProgress}
-                            distribution={selectedAudit.distribution}
+                            categoryProgress={selectedAudit.categoryProgress}
                         />
                     )}
-                    {secondAudit && (
+                    {secondAudit && secondAudit.name ? (
                         <AuditComparisonCard
                             name={secondAudit.name}
                             progress={secondAudit.overallProgress}
-                            categories={secondAudit.categoryProgress}
-                            distribution={secondAudit.distribution}
+                            categoryProgress={secondAudit.categoryProgress}
                         />
+                    ) : (
+                        <div className="p-4 bg-gray-100 rounded shadow">
+                            <p className="text-center text-sm">Bitte ein zweites Audit auswählen</p>
+                        </div>
                     )}
                 </div>
             </div>
