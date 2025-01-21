@@ -166,8 +166,8 @@ docker-release-job:
     - echo -n "${CI_REGISTRY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
-    - docker build -t ghcr.io/insight-softline/frontend:latest .
-    - docker push ghcr.io/insight-softline/frontend:latest # pushing the image to github container repo
+    - docker build -t ghcr.io/insight-softline/insightbackend:latest .
+    - docker push ghcr.io/insight-softline/insightbackend:latest # pushing the image to github container repo
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     - echo "[*] Image Build & Deployment was executed."
 
