@@ -2,12 +2,12 @@ import { LayoutDefault } from "../layouts/LayoutDefault.jsx";
 import AuditGrid from "../components/AuditGrid/AuditGrid.jsx";
 import { useState, useEffect, useMemo } from "react";
 import api from "../api.js";
-import { Input, debounce, TextField } from "@mui/material";
+import { debounce, TextField } from "@mui/material";
 import Title from "../components/Textareas/Title.jsx";
 import { LoadingScreen } from "../components/LoadingState";
-import { AlertWithMessage } from "../components/ErrorHandling";
 import { handleApiError } from "../utils/handleApiError";
 import { useLoadingProgress } from "../components/LoadingState/useLoadingProgress";
+import { AlertWithMessage } from "../components/ErrorHandling";
 
 export function Dashboard() {
     const [data, setData] = useState([]);
@@ -36,21 +36,6 @@ export function Dashboard() {
     useEffect(() => {
         setLoading(true);
         api
-            .get("/v1/audits")
-            .then((response) => {
-                setData(response.data);
-                setError(null);
-            })
-            .catch((err) => {
-                // Use the helper function
-                const errorMessage = handleApiError(err);
-                setError(errorMessage);
-            })
-            .finally(() => setLoading(false));
-    }, []);
-
-    useEffect(() => {
-        api
             .get("/v1/audits", {
                 params: {
                     search: debouncedSearchTerm?.length ? debouncedSearchTerm : undefined,
@@ -66,11 +51,8 @@ export function Dashboard() {
                 const errorMessage = handleApiError(err);
                 setError(errorMessage);
             })
+            .finally(() => setLoading(false));
     }, [debouncedSearchTerm]);
-
-    if (loading) {
-        return <LoadingScreen progress={loadingProgress} message="Loading, please wait..." />;
-    }
 
     if (error) {
         return <AlertWithMessage severity="error" title="Error" message={error} />;
@@ -79,8 +61,11 @@ export function Dashboard() {
     return (
         <LayoutDefault>
             <div className="w-full h-full p-5">
+                {loading && (
+                    <LoadingScreen progress={loadingProgress} message="Loading, please wait..." />
+                )}
                 <Title>Dashboard</Title>
-                <TextField id="outlined-basic" label="Suche" variant="outlined" onChange={handleSearchChange} />
+                <TextField id="outlined-basic" label="Suche" variant="outlined" value={searchTerm} onChange={handleSearchChange} />
                 <AuditGrid data={data} loading={loading} error={error} />
             </div>
         </LayoutDefault>
