@@ -156,10 +156,10 @@ docker-release-job:
 
 #RELEASE STAGE
 docker-release-job-fullstack:
-  image: docker:20
+  image: docker:latest
   stage: release
   services:
-    - docker:dind
+    - docker:19.03.12-dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
