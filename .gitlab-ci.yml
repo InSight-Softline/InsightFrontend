@@ -153,7 +153,6 @@ docker-release-job:
     #- docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     - echo "[*] Image Build & Deployment was executed."
 
-
 #RELEASE STAGE
 docker-release-job-fullstack:
   image: docker:latest
