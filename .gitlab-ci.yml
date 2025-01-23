@@ -34,18 +34,6 @@ test-e2e:
     - echo "Cypress e2e tests completed"
 
 
-#test-integration:
- # stage: test
-  #extends:
-    #- .setupCypress
- # script:
-   # - echo "Running integration tests..."
-   # - npm run dev &                          # Start the server in the background
-   # - sleep 20                               # Wait for the server to start (adjust time as needed)
-   # - npm run integration-test               # Run integration test
-   # - echo "Integration tests completed"
-
-
 test-lint:
   stage: test
   extends:
@@ -53,8 +41,6 @@ test-lint:
   script:
     - cd frontend
     - echo "Running linting..."
-    #- pwd                                        # use for debugging
-    #- ls                                         # use for debugging
     - npm run lint                                # Run ESLint for linting
     - echo "Linting completed"
 
@@ -99,11 +85,7 @@ sonarqube-check:
     - cd frontend
     - sonar-scanner               # use -X for debugging
   allow_failure: true
-  #only:
-    #- merge_requests
-    #- master
-    #- main
-    #- develop
+
 
 
 # BUILD STAGE
@@ -163,12 +145,12 @@ docker-release-job:
     - docker logout
     - echo $CR_PAT | docker login ghcr.io -u Syrimx --password-stdin # login to the github container registry
     - echo -n $DOCKER_LOGIN | docker login --username eschybol1 --password-stdin
-    - echo -n "${CI_REGISTRY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin # Authenticate against the GitLab container registry
+    #- echo -n "${CI_REGISTRY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
-    - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
+    #- docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest .
     - docker build -t ghcr.io/insight-softline/insightfrontend:latest .
-    - docker push ghcr.io/insight-softline/insightfrontend:latest # pushing the image to github container repo
-    - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
+    - docker push ghcr.io/insight-softline/insightfrontend:latest    
+    #- docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:latest
     - echo "[*] Image Build & Deployment was executed."
 
 
@@ -184,8 +166,8 @@ docker-release-job-fullstack:
     DOCKER_TLS_CERTDIR: ""
   dependencies:
     - frontend-build-job-fullstack
-  #rules:
-  #  - if: $CI_COMMIT_REF_NAME == "main"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
   allow_failure: true
   script:
     - echo "Building & Deploying Docker Image...."
@@ -196,7 +178,6 @@ docker-release-job-fullstack:
     - echo -n "${CI_DEPLOY_PASSWORD}" | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin # Authenticate against the GitLab container registry
     - cd frontend
     - docker build -t gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack .
-    - docker push ghcr.io/syrimx/softlineinsightfrontend:fullstack # pushing the image to github container repo
     - docker push gitlab.dit.htwk-leipzig.de:5050/projekt2024-s-audit-tool/frontend:fullstack
     - echo "[*] Image Build & Deployment was executed."
 
