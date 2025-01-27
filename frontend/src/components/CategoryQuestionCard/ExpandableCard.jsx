@@ -37,7 +37,7 @@ export default function ExpandableCard({children, onExpandChange, title}) {
 
     return (
         <Card sx={{padding: 0}}>
-            <CardHeader
+                        <CardHeader
                 title={title}
                 action={<ExpandMore
                     expand={expanded}

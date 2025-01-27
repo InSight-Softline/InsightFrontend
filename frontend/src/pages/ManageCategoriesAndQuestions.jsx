@@ -15,6 +15,7 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
     const [openedOnce, setOpenedOnce] = useState(false);
     const [newQuestionDialogOpen, setNewQuestionDialogOpen] = useState(false);
     const [deleteQuestionDialogOpen, setDeleteQuestionDialogOpen] = useState(false);
+    const [deleteQuestion, setDeleteQuestion] = useState();
 
     const handleOpen = async () => {
         if (!openedOnce) {
@@ -37,8 +38,8 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
     }
 
     const handleDeleteQuestion = (question) => {
-        setDeleteQuestionDialogOpen(true)
-        //alert('Delete Question with id ' + question.id);
+        setDeleteQuestionDialogOpen(true),
+        setDeleteQuestion(question)
     }
 
 
@@ -57,7 +58,7 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
     }
 
     function handleDelete(deleteQuestion) {
-        api.delete(`/v1/question/${deleteQuestion.id}`, {
+        api.delete(`/v1/questions/${deleteQuestion.id}`, {
         }).then(response => {
             setQuestions?.((oldQuestions) => oldQuestions.filter(question => question.id !== deleteQuestion.id))
             // todo: show success message
@@ -67,7 +68,7 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
             setDeleteQuestionDialogOpen(false)
         })
     }
-
+    
     return (
         <Fragment>
             <NewQuestionDialog open={newQuestionDialogOpen} initialCategory={category.id}
@@ -75,8 +76,7 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
                                onSubmit={handleCreate}
                                onClose={() => setNewQuestionDialogOpen(false)}></NewQuestionDialog>
             <DeleteQuestionDialog open={deleteQuestionDialogOpen} 
-                                  deleteQuestion={questions.ic} 
-                                  deleteCategory={category.id}
+                                  deleteQuestion={deleteQuestion}
                                   onSubmit={handleDelete}
                                   onClose={() => setDeleteQuestionDialogOpen(false)}></DeleteQuestionDialog>
             <CategoryQuestionCard category={category} questions={questions} onOpen={handleOpen}
@@ -194,7 +194,8 @@ export function ManageCategoriesAndQuestions() {
                     Kategorie hinzufügen
                 </Button>
                 {categoriesLoading ? <div>Loading...</div> : categories.map((category, index) =>
-                    <LazyCategoryQuestionCard key={category.id} category={category} availableCategories={categories} onAddedQuestion={handleAddedQuestion}/>)}
+                    <LazyCategoryQuestionCard key={category.id} category={category} availableCategories={categories} onAddedQuestion={handleAddedQuestion}/>,
+                    <Title>Kategorien und Fragen verwalten</Title>)}
             </section>
         </LayoutDefault>
     )
