@@ -1,5 +1,6 @@
 import {Button, FormControl, Input, InputLabel} from "@mui/material";
 import React from "react";
+import Typography from "@mui/material/Typography";
 
 export function CategoryDeleteForm({value, onChange = (_value) => {}, onSubmit = () => {} }) {
 
