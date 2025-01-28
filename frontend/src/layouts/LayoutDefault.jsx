@@ -17,7 +17,6 @@ import ListItemText from '@mui/material/ListItemText';
 import {Link, useLocation, useParams} from "react-router-dom";
 import { useSidebar } from "./UseSidebar.jsx";
 import {AuditProgress} from "../components/AuditProgress/AuditProgress.jsx";
-import CustomThemeProvider from "./Theme.jsx";
 
 const drawerWidth = 260;
 
@@ -63,7 +62,7 @@ export function LayoutDefault({ progress, children }) {
         sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100vh',
+            height: '100vh', 
             marginLeft: open ? 0 : `-${drawerWidth}px`,
         }}>
             {/* Header */}
@@ -155,9 +154,7 @@ export function LayoutDefault({ progress, children }) {
             </Drawer>
 
             <Main open={open} className="flex-1 ml-64 px-10 pb-4 overflow-y-auto" id="scroll-main">
-                <CustomThemeProvider>
-                    {children}
-                </CustomThemeProvider>
+                {children}
             </Main>
 
             {/* Footer */}

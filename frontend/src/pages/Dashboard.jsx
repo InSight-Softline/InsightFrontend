@@ -14,7 +14,7 @@ export function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-
+     
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
     const debouncedSearchUpdate = useMemo(
@@ -55,7 +55,7 @@ export function Dashboard() {
 
     // Filter data based on the search
     useEffect(() => {
-
+        
         api
             .get("/v1/audits", {
                 params: {
@@ -80,7 +80,7 @@ export function Dashboard() {
     return (
         <LayoutDefault>
                 <Title>Dashboard</Title>
-                <TextField data-cy="dashboard-search-field" label="Suche" value={searchTerm} onChange={handleSearchChange} />
+                <TextField id="outlined-basic" label="Suche" variant="outlined" value={searchTerm} onChange={handleSearchChange} />
                 {error && <AlertWithMessage severity="error" title="Fehler" message={error} />}
                 <AuditGrid data={data} loading={loading} error={error} />
         </LayoutDefault>

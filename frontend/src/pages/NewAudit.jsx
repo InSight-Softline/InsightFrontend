@@ -3,7 +3,7 @@ import api from "../api.js";
 import { LayoutDefault } from "../layouts/LayoutDefault.jsx";
 import { Table } from "../components/Table/Table.jsx";
 import { useNavigate } from "react-router-dom";
-import {TextField, Alert, Collapse, IconButton, Button} from "@mui/material";
+import { TextField, Alert, Collapse, IconButton } from "@mui/material";
 import Title from "../components/Textareas/Title.jsx";
 import { handleApiError } from "../utils/handleApiError";
 import { LoadingScreen } from "../components/LoadingState";
@@ -126,6 +126,7 @@ export function NewAudit() {
                     <div className="audit-name-field w-full max-w-xs ml-12">
                         <TextField
                             label="Audit Name"
+                            variant="outlined"
                             value={name}
                             onChange={handleNameChange}
                         />
@@ -133,6 +134,7 @@ export function NewAudit() {
                     <div className="customer-name-field w-full max-w-xs mt-4 ml-12">
                         <TextField
                             label="Firmenname"
+                            variant="outlined"
                             value={customerName}
                             onChange={handleCustomerNameChange}
                         />
@@ -148,12 +150,13 @@ export function NewAudit() {
                         }
                     }}
                 />
-                <div className="flex justify-end mt-3 mr-10 ml-3 mb-20">
-                    <Button
+                <div className="relative flex justify-center mt-6 pb-16">
+                    <button
                         onClick={handleCreateAuditClick}
+                        className="absolute bottom-4 right-4 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 p-3 bg-blue-500 text-white rounded shadow-lg"
                     >
                         Audit erstellen
-                    </Button>
+                    </button>
                 </div>
             </div>
         </LayoutDefault>

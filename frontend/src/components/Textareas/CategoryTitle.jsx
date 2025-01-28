@@ -9,7 +9,7 @@
  */
 const CategoryTitle = ({ children, ...props }) => {
     return(
-        <h2 className="py-1 text-xl font-bold" {...props}>
+        <h2 className="py-1 text-xl" {...props}>
             {children}
         </h2>
     )

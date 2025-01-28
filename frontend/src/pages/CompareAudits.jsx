@@ -5,7 +5,6 @@ import { AuditDropdown } from "../components/CompareAudit/AuditDropdown.jsx";
 import { AuditComparisonCard } from "../components/CompareAudit/AuditComparisonCard.jsx";
 import api from "../api";
 import Title from "../components/Textareas/Title.jsx";
-import {Input, TextField} from "@mui/material";
 
 /**
  * CompareAudits component renders a page for comparing two audits.
@@ -115,21 +114,19 @@ export function CompareAudits() {
                 <Title>Audits vergleichen</Title>
 
                 {/* Filter Inputs */}
-                <div className="flex flex-wrap gap-4 mb-6">
-                    <TextField
-                        label="Kunde"
+                <div className="flex flex-wrap gap-4">
+                    <input
+                        type="text"
+                        placeholder="Kunde"
                         value={filters.customer}
                         onChange={(e) => handleFilterChange("customer", e.target.value)}
+                        className="border rounded px-4 py-2"
                     />
-                    <TextField
-                        label="Datum"
+                    <input
                         type="date"
                         value={filters.date}
                         onChange={(e) => handleFilterChange("date", e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        color="primary"
+                        className="border rounded px-4 py-2"
                     />
                 </div>
 
@@ -155,7 +152,7 @@ export function CompareAudits() {
                         />
                     ) : (
                         <div className="p-4 bg-gray-100 rounded shadow">
-                            <p className="text-center text-m">Bitte ein zweites Audit auswählen</p>
+                            <p className="text-center text-sm">Bitte ein zweites Audit auswählen</p>
                         </div>
                     )}
                 </div>

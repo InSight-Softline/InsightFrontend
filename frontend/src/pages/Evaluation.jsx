@@ -117,19 +117,23 @@ export function Evaluation() {
                 </div>
             </DownloadWrapper>
 
-                <div className="flex justify-center space-x-4">
-                    <Button
-                        onClick={() => navigate(`/compare-audits/${auditId}`)}
-                    >
-                        Audit vergleichen
-                    </Button>
-                    <Button
-                        data-cy="ExportAuditButton"
-                        onClick={handleExportClick}
-                    >
-                        Audit Exportieren
-                    </Button>
-                </div>
+            <div className="flex justify-center space-x-4">
+                <Button
+                    onClick={() => navigate(`/compare-audits/${auditId}`)}
+                    variant="outlined"
+                    color="error"
+                >
+                    Audit vergleichen
+                </Button>
+                <Button
+                    data-cy="ExportAuditButton"
+                    onClick={handleExportClick}
+                    variant="outlined"
+                    color="error"
+                >
+                    Audit Exportieren
+                </Button>
+            </div>
         </LayoutDefault>
     );
 }
