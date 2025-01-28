@@ -5,6 +5,11 @@ import { AuditDropdown } from "../components/CompareAudit/AuditDropdown.jsx";
 import { AuditComparisonCard } from "../components/CompareAudit/AuditComparisonCard.jsx";
 import api from "../api";
 import Title from "../components/Textareas/Title.jsx";
+import {TextField } from "@mui/material";
+import { LoadingScreen } from "../components/LoadingState";
+import { handleApiError } from "../utils/handleApiError";
+import { useLoadingProgress } from "../components/LoadingState/useLoadingProgress";
+import { AlertWithMessage } from "../components/ErrorHandling";
 
 /**
  * CompareAudits component renders a page for comparing two audits.
@@ -21,6 +26,7 @@ export function CompareAudits() {
     const [filteredAudits, setFilteredAudits] = useState([]);
     const [filters, setFilters] = useState({ customer: "", date: "" });
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     /**
      * Fetches audit progress and category-specific progress data from the API.
@@ -29,34 +35,45 @@ export function CompareAudits() {
      * @param {Function} setAudit - State setter function for updating the audit data (selectedAudit or secondAudit).
      * @param {string} errorMessage - Error message to display if the API request fails.
      */
-    const fetchAuditData = useCallback(async (auditId, setAudit, errorMessage) => {
+    const fetchAuditData = useCallback(async (auditId, setAudit, setError) => {
         try {
             const progressResponse = await api.get(`/v1/audits/${auditId}/progress`);
-            console.log("API Response:", progressResponse.data);
-
+    
+            let categoryProgress = (progressResponse.data.categoryProgress || []).map(category => ({
+                categoryName: category.categoryName,
+                currentCategoryProgress: category.currentCategoryProgress,
+            }));
+    
+            // Platzhalterkategorien hinzufügen, wenn weniger als 3 vorhanden sind
+            while (categoryProgress.length < 3) {
+                categoryProgress.push({
+                    categoryName: "", // Leerer Name für Platzhalter
+                    currentCategoryProgress: 0, // Fortschritt auf 0 setzen
+                });
+            }
+    
             const auditData = {
                 id: auditId,
                 name: allAudits.find(a => a.id === parseInt(auditId))?.name || `Audit ${auditId}`,
                 overallProgress: progressResponse.data.currentAuditProgress || 0,
-                categoryProgress: (progressResponse.data.categoryProgress || []).map(category => ({
-                    categoryName: category.categoryName,
-                    currentCategoryProgress: category.currentCategoryProgress,
-                })),
+                categoryProgress: categoryProgress,
             };
-
-            console.log("Processed Audit Data:", auditData);
-
+    
             setAudit(auditData);
-        } catch (err) {
-            console.error(errorMessage, err);
+        } catch (error) {
+            const errorMessage = handleApiError(error); // Use handleApiError
             setError(errorMessage);
         }
     }, [allAudits]);
+
+    // Use the custom loading progress hook
+    const loadingProgress = useLoadingProgress(loading);
 
     /**
      * Fetches the list of all available audits for selection.
      */
     useEffect(() => {
+        setLoading(true);
         const fetchAllAudits = async () => {
             try {
                 const response = await api.get('/v1/audits');
@@ -64,11 +81,14 @@ export function CompareAudits() {
                 setFilteredAudits(response.data);
             } catch {
                 setError("Fehler beim Laden der Audit-Liste.");
+            } finally {
+                setLoading(false);
             }
         };
-
+    
         fetchAllAudits();
     }, []);
+    
 
     /**
      * Fetches data for the selected audit after all audits are loaded.
@@ -109,24 +129,31 @@ export function CompareAudits() {
         setFilters(prev => ({ ...prev, [filterType]: value }));
     };
 
+    if (loading) {
+        return <LoadingScreen progress={loadingProgress} message="Loading, please wait..." />;
+    }
+
     return (
         <LayoutDefault>
+                {error && <AlertWithMessage severity="error" title="Fehler" message={error} />}
                 <Title>Audits vergleichen</Title>
 
                 {/* Filter Inputs */}
-                <div className="flex flex-wrap gap-4">
-                    <input
-                        type="text"
-                        placeholder="Kunde"
+                <div className="flex flex-wrap gap-4 mb-6">
+                    <TextField
+                        label="Kunde"
                         value={filters.customer}
                         onChange={(e) => handleFilterChange("customer", e.target.value)}
-                        className="border rounded px-4 py-2"
                     />
-                    <input
+                    <TextField
+                        label="Datum"
                         type="date"
                         value={filters.date}
                         onChange={(e) => handleFilterChange("date", e.target.value)}
-                        className="border rounded px-4 py-2"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        color="primary"
                     />
                 </div>
 
@@ -152,7 +179,7 @@ export function CompareAudits() {
                         />
                     ) : (
                         <div className="p-4 bg-gray-100 rounded shadow">
-                            <p className="text-center text-sm">Bitte ein zweites Audit auswählen</p>
+                            <p className="text-center text-m">Bitte ein zweites Audit auswählen</p>
                         </div>
                     )}
                 </div>

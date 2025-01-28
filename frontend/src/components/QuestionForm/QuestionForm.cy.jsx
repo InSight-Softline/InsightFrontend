@@ -1,7 +1,7 @@
 import React from 'react'
 import {QuestionForm} from "./QuestionForm.jsx";
 
-describe('<MyExampleComponent />', () => {
+describe('<QuestionForm />', () => {
   it('renders', () => {
     // see: https://on.cypress.io/mounting-react
     cy.mount(<QuestionForm value={{name: "", category: ""}} />)
@@ -9,7 +9,7 @@ describe('<MyExampleComponent />', () => {
 
   it('can render question name', ()=>{
     cy.mount(<QuestionForm value={{name: "Hello", category: ""}} />)
-    cy.get('[data-cy="question-form-question-name"] > input').should('have.value', 'Hello')
+    cy.get('[data-cy="question-form-question-name"] > div > textarea').should('have.value', 'Hello')
   })
 
   it('can render category options', ()=>{

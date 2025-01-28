@@ -1,4 +1,4 @@
-import {Button, FormControl, Input, InputLabel} from "@mui/material";
+import {Button, FormControl, TextField} from "@mui/material";
 import React from "react";
 
 export function CategoryForm({value, onChange = (_value) => {}, onSubmit = () => {} }) {
@@ -10,8 +10,15 @@ export function CategoryForm({value, onChange = (_value) => {}, onSubmit = () =>
     return (
         <form className="flex flex-col gap-2">
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Kategorie</InputLabel>
-                <Input data-cy="category-form-category-name" value={value.name} onChange={(e) => setCategory(e.target.value)}></Input>
+                <TextField
+                    data-cy="category-form-category-name"
+                    label="Kategorie"
+                    value={value.name}
+                    onChange={(e) => setCategory(e.target.value)}
+                    multiline
+                    minRows={1}
+                    fullWidth
+                />
             </FormControl>
             <Button data-cy="category-form-submit-button" onClick={onSubmit}>Submit</Button>
         </form>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {CategoryForm} from "./CategoryForm.jsx";
 
-describe('<MyExampleComponent />', () => {
+describe('<CategoryForm />', () => {
     it('renders', () => {
         // see: https://on.cypress.io/mounting-react
         cy.mount(<CategoryForm value={{name: ""}} />)
@@ -9,7 +9,7 @@ describe('<MyExampleComponent />', () => {
 
     it('can render category name', ()=>{
         cy.mount(<CategoryForm value={{name: "Hello"}} />)
-        cy.get('[data-cy="category-form-category-name"] > input').should('have.value', 'Hello')
+        cy.get('[data-cy="category-form-category-name"] > div > textarea').should('have.value', 'Hello')
     })
 
     it('can submit form', ()=>{

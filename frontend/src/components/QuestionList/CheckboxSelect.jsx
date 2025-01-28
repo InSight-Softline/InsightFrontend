@@ -43,6 +43,7 @@ export function CheckboxSelect({ value, options, onChange }) {
                         <Checkbox
                             checked={value === label}
                             onChange={(event) => handleCheckboxChange(event, label) }
+                            color="secondary"
                         />
                     }
                     label={label.toString()}

@@ -45,8 +45,8 @@ describe('Dashboard Navigation Tests', () => {
             cy.wait('@getAudits'); // Warte auf die initiale Datenabfrage
 
             // Suchfeld überprüfen
-            cy.get('input#outlined-basic').should('exist').should('be.visible');
-            cy.get('input#outlined-basic').type('Example Audit'); // Suchtext eingeben
+            cy.get('[data-cy="dashboard-search-field"]').should('exist').should('be.visible');
+            cy.get('[data-cy="dashboard-search-field"]').type('Example Audit'); // Suchtext eingeben
 
             // Warte auf die gefilterte Anfrage
             cy.wait('@getFilteredAudits', { timeout: 10000 });

@@ -1,4 +1,4 @@
-import {Card, CardActions, CardContent, CardHeader, Collapse, IconButton} from "@mui/material";
+import {Card, CardContent, CardHeader, Collapse, IconButton} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {useState} from "react";
 import {ExpandMoreOutlined} from "@mui/icons-material";
@@ -37,7 +37,8 @@ export default function ExpandableCard({children, onExpandChange, title}) {
 
     return (
         <Card sx={{padding: 0}}>
-                        <CardHeader
+            <CardHeader
+                data-cy="expandable-card-title"
                 title={title}
                 action={<ExpandMore
                     expand={expanded}
@@ -45,7 +46,7 @@ export default function ExpandableCard({children, onExpandChange, title}) {
                     aria-expanded={expanded}
                     aria-label="show more"
                 >
-                    <ExpandMoreOutlined />
+                    <ExpandMoreOutlined data-cy="expandable-card-button"/>
                 </ExpandMore>}
             >
             </CardHeader>

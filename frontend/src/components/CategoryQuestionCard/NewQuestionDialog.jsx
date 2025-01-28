@@ -8,7 +8,7 @@ export default function NewQuestionDialog ({onClose, open, availableCategories =
         category: initialCategory ?? ""
     });
     return (
-        <BaseDialog title="Frage anlegen" onClose={onClose} open={open}>
+        <BaseDialog title="Neue Frage anlegen" onClose={onClose} open={open}>
             <QuestionForm value={question} onChange={setQuestion} onSubmit={()=>onSubmit(question)} categoryOptions={availableCategories}></QuestionForm>
         </BaseDialog>
     )

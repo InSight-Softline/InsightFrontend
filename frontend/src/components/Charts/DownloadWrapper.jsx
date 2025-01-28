@@ -19,9 +19,7 @@ const DownloadWrapper = ({children}) => {
 
     return (
         <div data-cy="chart-wrapper" className="flex flex-col items-end w-full">
-            <ButtonGroup
-                variant="outlined"
-                color="error">
+            <ButtonGroup>
                 <Button
                     onClick={() => {
                         handleJPEGExport();

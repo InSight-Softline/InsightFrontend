@@ -19,7 +19,7 @@ export default function CategoryQuestionCard({onOpen, children, questions, categ
     }
 
     return (
-        <ExpandableCard onExpandChange={handleExpandChange} title={category.name}>
+        <ExpandableCard onExpandChange={handleExpandChange} title={category?.name}>
             {children ? children : <QuestionTable questions={questions} onNew={handleNew} onDelete={handleDelete}></QuestionTable>}
         </ExpandableCard>
     )

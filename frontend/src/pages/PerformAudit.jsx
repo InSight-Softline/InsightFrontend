@@ -235,16 +235,17 @@ export function PerformAudit() {
 
     if (loading) {
         return <LoadingScreen progress={loadingProgress} message="Audit is loading..."/>;
+    }
 
+    if (error) {
+        return <AlertWithMessage severity="error" title="Fehler" message={error}/>;
     }
 
     return (
         <LayoutDefault
             progress={progress.categoryProgress}
         >
-            {patchError && <AlertWithMessage severity="error" title="Fehler" message={patchError} />} {/* Fehleranzeige */}
-            {error && <AlertWithMessage severity="error" title="Fehler" message={error} />} {/* Fehleranzeige */}
-            {/*^= h1*/}
+            {patchError && <AlertWithMessage severity="error" title="Fehler" message={patchError} />}
             <Title>Audit durchführen</Title>
             <CategoryList
                 categories={sortedQuestions}

@@ -31,7 +31,7 @@ export function CategoryProgress({ name, answeredQuestions, totalQuestions}) {
             {/* Progress bar indicating the percentage of answered questions */}
             <div className="mt-2 h-2 w-full bg-gray-200 rounded">
                 <div
-                    className="h-2 bg-red-600 rounded"
+                    className="h-2 bg-softline-rot rounded"
                     style={{ width: `${percentage}%` }}
                     data-cy="category-progress-bar"
                 />

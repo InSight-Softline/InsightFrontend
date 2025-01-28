@@ -7,8 +7,15 @@ export default function NewCategoryDialog ({onClose, open, onSubmit}) {
         name: "",
     });
     return (
-        <BaseDialog title="Kategorie anlegen" onClose={onClose} open={open}>
-            <CategoryForm value={category} onChange={setCategory} onSubmit={()=>onSubmit(category)}></CategoryForm>
+        <BaseDialog
+            title="Neue Kategorie anlegen"
+            onClose={onClose} open={open}
+        >
+            <CategoryForm
+                value={category}
+                onChange={setCategory}
+                onSubmit={()=>onSubmit(category)}
+            />
         </BaseDialog>
     )
 }
