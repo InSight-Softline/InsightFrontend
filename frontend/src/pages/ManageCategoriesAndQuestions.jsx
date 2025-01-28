@@ -78,7 +78,7 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
     }
 
     const handleDeleteCat = (deleteCategory)=>{
-        api.delete(`/v1/categories/${category.id}`, {
+        api.delete(`/v1/categories/${deleteCategory.id}`, {
         }).then((response) => {
             setCategories?.((oldCategories) => oldCategories.filter(category => category.id !== deleteCategory.id))
             // todo: show success message
@@ -102,8 +102,8 @@ const LazyCategoryQuestionCard = ({category, availableCategories = []}) => {
                                   onClose={() => setDeleteQuestionDialogOpen(false)}></DeleteQuestionDialog>
             <DeleteCategoryDialog open={deleteCategoryDialogOpen} 
                                   deleteCategory={deleteCategory}
-                                  onSubmit={handleDeleteCat}>
-                                  onClose={()=>setDeleteCategoryDialogOpen(false)}</DeleteCategoryDialog>
+                                  onSubmit={handleDeleteCat}
+                                  onClose={()=>setDeleteCategoryDialogOpen(false)}></DeleteCategoryDialog>
             <CategoryQuestionCard category={category} questions={questions} 
                                   onOpen={handleOpen}
                                   onDeleteCategory={handleDeleteCategory}
